@@ -1,12 +1,13 @@
+import Button from "@mui/material/Button"
 import Link from "next/link"
 
 function HomePage() {
   return <div>
     <Link href={'/busca'} >
-      <button>Buscar</button>
+      <Button variant="contained">Buscar</Button>
     </Link>
     <Link href={'/resultado'} >
-      <button>Resultado</button>
+      <Button variant="contained">Resultado</Button>
     </Link>
   </div>
 }
