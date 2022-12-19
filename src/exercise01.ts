@@ -1,7 +1,7 @@
-export function maskify(txt: string): string {
-  if (txt.length <= 4) {
-    return txt
+export function maskify(string: string): string {
+  if (string.length <= 4) {
+    return string
   }
 
-  return (txt.substring(txt.length - 4)).padStart(txt.length, '#');
+  return (string.substring(string.length - 4)).padStart(string.length, '#');
 }

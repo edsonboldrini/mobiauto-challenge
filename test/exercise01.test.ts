@@ -1,7 +1,7 @@
 import { maskify } from "../src/exercise01";
 
 
-describe("test add function", () => {
+describe("test exercise01 function", () => {
   it("should return '############5616' for maskify('4556364607935616')", () => {
     expect(maskify('4556364607935616')).toBe('############5616');
   });
