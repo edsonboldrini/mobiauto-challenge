@@ -1,4 +1,4 @@
-import { maskify } from "../src/exercise01";
+import { maskify } from "../src/exercises/exercise01";
 
 
 describe("test exercise01 function", () => {

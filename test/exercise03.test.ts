@@ -1,4 +1,4 @@
-import { getRickAndMortyCharacters } from "../src/exercise03";
+import { getRickAndMortyCharacters } from "../src/exercises/exercise03";
 
 describe("test exercise02 function", () => {
   it("should return ", async () => {

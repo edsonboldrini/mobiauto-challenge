@@ -1,4 +1,4 @@
-import { checkIfTheFirstLetterIsUppercase } from "../src/exercise04";
+import { checkIfTheFirstLetterIsUppercase } from "../src/exercises/exercise04";
 
 
 describe("test exercise01 function", () => {

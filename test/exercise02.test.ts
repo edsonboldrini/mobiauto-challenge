@@ -1,4 +1,4 @@
-import { updateData } from "../src/exercise02";
+import { updateData } from "../src/exercises/exercise02";
 
 describe("test exercise02 function", () => {
   it("should return { name: 'Marcos', country: 'Japão', age: 33 }", () => {
