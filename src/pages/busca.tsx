@@ -1,15 +1,45 @@
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { useState } from 'react';
 
-export default function SignIn() {
+interface Marca {
+  nome: string
+  codigo: string
+}
+interface Modelo {
+  nome: string
+  codigo: string
+}
+
+interface BuscaProps {
+  companies: Marca[] | null
+}
+
+export default function Busca({ companies }: BuscaProps) {
+  const [currentCompany, setCurrentCompany] = useState<string>('')
+  const [currentModel, setCurrentModel] = useState<string>('')
+  const [models, setModels] = useState<Modelo[] | null>(null)
+
+  const handleCompanyChange = async (event: SelectChangeEvent<string>) => {
+    setCurrentCompany(event.target.value)
+    setCurrentModel('')
+
+    if (event.target.value) {
+      const newModels: Modelo[] | null = await fetchModels(event.target.value)
+
+      if (newModels?.length) {
+        setModels(newModels)
+      }
+    }
+  }
+
+  const handleModelChange = (event: SelectChangeEvent<string>) => {
+    setCurrentModel(event.target.value)
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -28,61 +58,85 @@ export default function SignIn() {
         alignItems: 'center',
       }}
     >
-      {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <LockOutlinedIcon />
-      </Avatar> */}
       <Typography component="h1" variant="h3">
         Tabela Fipe
       </Typography>
-      <Typography component="h3" variant="h6" fontWeight="">
+      <Typography component="h3" variant="h6">
         Consulte o valor de um veículo de forma gratuita
       </Typography>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        <TextField
-          margin="normal"
+        <Select
+          labelId="companies-select"
+          id="companies-select"
+          value={currentCompany}
+          label="Marca"
+          onChange={handleCompanyChange}
+          margin="none"
           required
           fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-        />
-        <TextField
-          margin="normal"
+          placeholder='Marca'
+        >
+          {companies?.map((element) =>
+            <MenuItem value={element.codigo} key={element.codigo}>{element.nome}</MenuItem>
+          )}
+        </Select>
+        <Select
+          labelId="companies-select"
+          id="companies-select"
+          value={currentModel}
+          label="Age"
+          onChange={handleModelChange}
+          margin="none"
           required
           fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-        />
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-        />
+        >
+          {models?.map((element) =>
+            <MenuItem value={element.codigo} key={element.codigo}>{element.nome}</MenuItem>
+          )}
+        </Select>
         <Button
           type="submit"
           fullWidth
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Sign In
+          Consultar preço
         </Button>
-        <Grid container>
-          <Grid item xs>
-            <Link href="#" variant="body2">
-              Forgot password?
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link href="#" variant="body2">
-              {"Don't have an account? Sign Up"}
-            </Link>
-          </Grid>
-        </Grid>
       </Box>
     </Box >
   );
+}
+
+async function fetchCompanies(): Promise<Marca[] | null> {
+  try {
+    const response = await fetch('https://parallelum.com.br/fipe/api/v1/carros/marcas')
+    const data = await response.json()
+
+    return data
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
+
+async function fetchModels(currentCompany: string): Promise<Modelo[] | null> {
+  try {
+    const response = await fetch(`https://parallelum.com.br/fipe/api/v1/carros/marcas/${currentCompany}/modelos`)
+    const data = await response.json()
+
+    return data.modelos
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
+
+export async function getServerSideProps() {
+  const companies = await fetchCompanies()
+
+  return {
+    props: {
+      companies,
+    }
+  }
 }
