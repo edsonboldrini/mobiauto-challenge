@@ -121,6 +121,7 @@ export default function Busca({ companies }: BuscaProps) {
               margin="none"
               required
               fullWidth
+              disabled={!currentCompany}
             >
               {models?.map((element) =>
                 <MenuItem value={element.codigo} key={element.codigo}>{element.nome}</MenuItem>
