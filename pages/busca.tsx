@@ -7,31 +7,25 @@ import { useState } from 'react';
 import { red } from '@mui/material/colors';
 import InputLabel from '@mui/material/InputLabel';
 import { FormControl } from '@mui/material';
-
-interface Marca {
-  nome: string
-  codigo: string
-}
-interface Modelo {
-  nome: string
-  codigo: string
-}
+import { IMarca, IModelo, IYear } from '../src/types';
 
 interface BuscaProps {
-  companies: Marca[] | null
+  brands: IMarca[] | null
 }
 
-export default function Busca({ companies }: BuscaProps) {
-  const [currentCompany, setCurrentCompany] = useState<string>('')
+export default function Busca({ brands }: BuscaProps) {
+  const [currentBrand, setCurrentBrand] = useState<string>('')
   const [currentModel, setCurrentModel] = useState<string>('')
-  const [models, setModels] = useState<Modelo[] | null>(null)
+  const [currentYear, setCurrentYear] = useState<string>('')
+  const [models, setModels] = useState<IModelo[] | null>(null)
+  const [years, setYears] = useState<IYear[] | null>(null)
 
-  const handleCompanyChange = async (event: SelectChangeEvent<string>) => {
-    setCurrentCompany(event.target.value)
+  const handleBrandChange = async (event: SelectChangeEvent<string>) => {
+    setCurrentBrand(event.target.value)
     setCurrentModel('')
 
     if (event.target.value) {
-      const newModels: Modelo[] | null = await fetchModels(event.target.value)
+      const newModels: IModelo[] | null = await fetchModels(event.target.value)
 
       if (newModels?.length) {
         setModels(newModels)
@@ -39,16 +33,30 @@ export default function Busca({ companies }: BuscaProps) {
     }
   }
 
-  const handleModelChange = (event: SelectChangeEvent<string>) => {
+  const handleModelChange = async (event: SelectChangeEvent<string>) => {
     setCurrentModel(event.target.value)
+    setCurrentYear('')
+
+    if (event.target.value) {
+      const newYears: IModelo[] | null = await fetchYears(currentBrand, event.target.value)
+
+      if (newYears?.length) {
+        setYears(newYears)
+      }
+    }
+  }
+
+  const handleYearChange = async (event: SelectChangeEvent<string>) => {
+    setCurrentYear(event.target.value)
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      brand: data.get('brand'),
+      model: data.get('model'),
+      year: data.get('year'),
     });
   };
 
@@ -89,45 +97,72 @@ export default function Busca({ companies }: BuscaProps) {
         >
           <FormControl
             fullWidth
-            sx={{ marginBottom: 2 }}
+            sx={{ marginBottom: 3 }}
           >
-            <InputLabel id="companies-select">Marca</InputLabel>
+            <InputLabel id="brands-select">Marca</InputLabel>
             <Select
-              labelId="companies-select"
-              id="companies-select"
-              value={currentCompany}
+              labelId="brands-select"
+              id="brand"
+              name="brand"
+              value={currentBrand}
               label="Marca"
-              onChange={handleCompanyChange}
+              onChange={handleBrandChange}
               margin="none"
               required
               fullWidth
             >
-              {companies?.map((element) =>
+              {brands?.map((element) =>
                 <MenuItem value={element.codigo} key={element.codigo}>{element.nome}</MenuItem>
               )}
             </Select>
           </FormControl>
           <FormControl
             fullWidth
-            sx={{ marginBottom: 2 }}
+            sx={{ marginBottom: 3 }}
           >
-            <InputLabel id="model-select">Modelo</InputLabel>
+            <InputLabel id="models-select">Modelo</InputLabel>
             <Select
-              labelId="model-select"
-              id="model-select"
+              labelId="models-select"
+              id="model"
+              name="model"
               value={currentModel}
               label="Modelo"
               onChange={handleModelChange}
               margin="none"
               required
               fullWidth
-              disabled={!currentCompany}
+              disabled={!currentBrand}
             >
               {models?.map((element) =>
                 <MenuItem value={element.codigo} key={element.codigo}>{element.nome}</MenuItem>
               )}
             </Select>
           </FormControl>
+          {!currentModel ?
+            <></> :
+            <FormControl
+              fullWidth
+              sx={{ marginBottom: 3 }}
+            >
+              <InputLabel id="years-select">Ano</InputLabel>
+              <Select
+                labelId="years-select"
+                id="year"
+                name="year"
+                value={currentYear}
+                label="Ano"
+                onChange={handleYearChange}
+                margin="none"
+                required
+                fullWidth
+                disabled={!currentModel}
+              >
+                {years?.map((element) =>
+                  <MenuItem value={element.codigo} key={element.codigo}>{element.nome}</MenuItem>
+                )}
+              </Select>
+            </FormControl>
+          }
           <Box
             sx={{
               display: 'flex',
@@ -138,7 +173,7 @@ export default function Busca({ companies }: BuscaProps) {
             <Button
               type="submit"
               variant="contained"
-              sx={{ mt: 3 }}
+              disabled={!currentBrand || !currentModel || !currentYear}
             >
               Consultar preço
             </Button>
@@ -149,7 +184,7 @@ export default function Busca({ companies }: BuscaProps) {
   );
 }
 
-async function fetchCompanies(): Promise<Marca[] | null> {
+async function fetchBrands(): Promise<IMarca[] | null> {
   try {
     const response = await fetch('https://parallelum.com.br/fipe/api/v1/carros/marcas')
     const data = await response.json()
@@ -161,9 +196,9 @@ async function fetchCompanies(): Promise<Marca[] | null> {
   }
 }
 
-async function fetchModels(currentCompany: string): Promise<Modelo[] | null> {
+async function fetchModels(brand: string): Promise<IModelo[] | null> {
   try {
-    const response = await fetch(`https://parallelum.com.br/fipe/api/v1/carros/marcas/${currentCompany}/modelos`)
+    const response = await fetch(`https://parallelum.com.br/fipe/api/v1/carros/marcas/${brand}/modelos`)
     const data = await response.json()
 
     return data.modelos
@@ -173,12 +208,24 @@ async function fetchModels(currentCompany: string): Promise<Modelo[] | null> {
   }
 }
 
+async function fetchYears(brand: string, model: string): Promise<IYear[] | null> {
+  try {
+    const response = await fetch(`https://parallelum.com.br/fipe/api/v1/carros/marcas/${brand}/modelos/${model}/anos`)
+    const data = await response.json()
+
+    return data
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
+
 export async function getServerSideProps() {
-  const companies = await fetchCompanies()
+  const brands = await fetchBrands()
 
   return {
     props: {
-      companies,
+      brands,
     }
   }
 }
