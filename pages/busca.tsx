@@ -8,12 +8,14 @@ import { red } from '@mui/material/colors';
 import InputLabel from '@mui/material/InputLabel';
 import { FormControl } from '@mui/material';
 import { IMarca, IModelo, IYear } from '../src/types';
+import { useRouter } from 'next/router';
 
 interface BuscaProps {
   brands: IMarca[] | null
 }
 
 export default function Busca({ brands }: BuscaProps) {
+  const router = useRouter()
   const [currentBrand, setCurrentBrand] = useState<string>('')
   const [currentModel, setCurrentModel] = useState<string>('')
   const [currentYear, setCurrentYear] = useState<string>('')
@@ -53,11 +55,8 @@ export default function Busca({ brands }: BuscaProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      brand: data.get('brand'),
-      model: data.get('model'),
-      year: data.get('year'),
-    });
+
+    router.push(`/resultado?brand=${data.get('brand')}&model=${data.get('model')}&year=${data.get('year')}`)
   };
 
   return (
@@ -82,7 +81,7 @@ export default function Busca({ brands }: BuscaProps) {
         <Typography component="h1" variant="h4" sx={{ mb: 2 }}>
           Tabela Fipe
         </Typography>
-        <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
+        <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
           Consulte o valor de um veículo de forma gratuita
         </Typography>
         <Box
@@ -220,7 +219,7 @@ async function fetchYears(brand: string, model: string): Promise<IYear[] | null>
   }
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
   const brands = await fetchBrands()
 
   return {
