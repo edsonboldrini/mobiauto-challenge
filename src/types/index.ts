@@ -13,7 +13,7 @@ export interface IYear {
   codigo: string
 }
 
-export interface ICarData {
+export interface IVehicleData {
   Valor: string
   Marca: string
   Modelo: string

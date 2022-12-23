@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import { ICarData } from '../src/types'
+import { IVehicleData } from '../src/types'
 
-interface BuscaProps {
-  price: ICarData | null
+interface ResultadoProps {
+  vehicleData: IVehicleData | null
 }
 
 const StyledContainer = styled('div')(({ theme }) => ({
@@ -19,7 +19,7 @@ const StyledContainer = styled('div')(({ theme }) => ({
   }
 }))
 
-export default function Busca({ price }: BuscaProps) {
+export default function Resultado({ vehicleData }: ResultadoProps) {
   return (
     <Box
       sx={{
@@ -35,7 +35,7 @@ export default function Busca({ price }: BuscaProps) {
           variant="h4"
           sx={{ mb: 2, fontWeight: 'bold', color: '#454357', textAlign: 'center' }}
         >
-          Tabela Fipe: Preço {price?.Modelo}
+          Tabela Fipe: Preço {vehicleData?.Modelo}
         </Typography>
         <Box
           sx={{
@@ -48,7 +48,7 @@ export default function Busca({ price }: BuscaProps) {
             mb: 2
           }}
         >
-          {price?.Valor}
+          {vehicleData?.Valor}
         </Box>
         <Typography sx={{ color: '#87859a' }}>Este é o preço de compra do veículo</Typography>
       </StyledContainer>
@@ -56,7 +56,7 @@ export default function Busca({ price }: BuscaProps) {
   )
 }
 
-async function fetchPrice(brand: string, model: string, year: string): Promise<ICarData | null> {
+async function fetchPrice(brand: string, model: string, year: string): Promise<IVehicleData | null> {
   try {
     const response = await fetch(
       `https://parallelum.com.br/fipe/api/v1/carros/marcas/${brand}/modelos/${model}/anos/${year}`
