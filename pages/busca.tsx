@@ -1,18 +1,41 @@
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { useState } from 'react';
-import { red } from '@mui/material/colors';
-import InputLabel from '@mui/material/InputLabel';
-import { FormControl } from '@mui/material';
-import { IMarca, IModelo, IYear } from '../src/types';
-import { useRouter } from 'next/router';
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import { useState } from 'react'
+import { red } from '@mui/material/colors'
+import InputLabel from '@mui/material/InputLabel'
+import { FormControl } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { IMarca, IModelo, IYear } from '../src/types'
+import { useRouter } from 'next/router'
 
 interface BuscaProps {
   brands: IMarca[] | null
 }
+
+const StyledContainer = styled('div')(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  backgroundColor: red[50],
+  padding: 48,
+  [theme.breakpoints.down('md')]: {
+    padding: 24
+  }
+}))
+
+const StyledForm = styled('form')(({ theme }) => ({
+  width: '50%',
+  padding: 48,
+  backgroundColor: 'white',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+    padding: 24
+  }
+}))
 
 export default function Busca({ brands }: BuscaProps) {
   const router = useRouter()
@@ -53,11 +76,11 @@ export default function Busca({ brands }: BuscaProps) {
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
 
     router.push(`/resultado?brand=${data.get('brand')}&model=${data.get('model')}&year=${data.get('year')}`)
-  };
+  }
 
   return (
     <Box
@@ -68,36 +91,19 @@ export default function Busca({ brands }: BuscaProps) {
         justifyContent: 'center'
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: 1,
-          backgroundColor: red[50],
-          padding: 6
-        }}
-      >
-        <Typography component="h1" variant="h4" sx={{ mb: 2 }}>
+      <StyledContainer>
+        <Typography component="h1" variant="h4" sx={{ mb: 2, textAlign: 'center' }}>
           Tabela Fipe
         </Typography>
-        <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+        <Typography component="h2" variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
           Consulte o valor de um veículo de forma gratuita
         </Typography>
-        <Box
-          component="form"
+        <StyledForm
+          // component="form"
           onSubmit={handleSubmit}
           noValidate
-          sx={{
-            width: 1 / 2,
-            backgroundColor: 'white',
-            padding: 6
-          }}
         >
-          <FormControl
-            fullWidth
-            sx={{ marginBottom: 3 }}
-          >
+          <FormControl fullWidth sx={{ marginBottom: 3 }}>
             <InputLabel id="brands-select">Marca</InputLabel>
             <Select
               labelId="brands-select"
@@ -110,15 +116,14 @@ export default function Busca({ brands }: BuscaProps) {
               required
               fullWidth
             >
-              {brands?.map((element) =>
-                <MenuItem value={element.codigo} key={element.codigo}>{element.nome}</MenuItem>
-              )}
+              {brands?.map((element) => (
+                <MenuItem value={element.codigo} key={element.codigo}>
+                  {element.nome}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
-          <FormControl
-            fullWidth
-            sx={{ marginBottom: 3 }}
-          >
+          <FormControl fullWidth sx={{ marginBottom: 3 }}>
             <InputLabel id="models-select">Modelo</InputLabel>
             <Select
               labelId="models-select"
@@ -132,17 +137,17 @@ export default function Busca({ brands }: BuscaProps) {
               fullWidth
               disabled={!currentBrand}
             >
-              {models?.map((element) =>
-                <MenuItem value={element.codigo} key={element.codigo}>{element.nome}</MenuItem>
-              )}
+              {models?.map((element) => (
+                <MenuItem value={element.codigo} key={element.codigo}>
+                  {element.nome}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
-          {!currentModel ?
-            <></> :
-            <FormControl
-              fullWidth
-              sx={{ marginBottom: 3 }}
-            >
+          {!currentModel ? (
+            <></>
+          ) : (
+            <FormControl fullWidth sx={{ marginBottom: 3 }}>
               <InputLabel id="years-select">Ano</InputLabel>
               <Select
                 labelId="years-select"
@@ -156,12 +161,14 @@ export default function Busca({ brands }: BuscaProps) {
                 fullWidth
                 disabled={!currentModel}
               >
-                {years?.map((element) =>
-                  <MenuItem value={element.codigo} key={element.codigo}>{element.nome}</MenuItem>
-                )}
+                {years?.map((element) => (
+                  <MenuItem value={element.codigo} key={element.codigo}>
+                    {element.nome}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
-          }
+          )}
           <Box
             sx={{
               display: 'flex',
@@ -169,18 +176,14 @@ export default function Busca({ brands }: BuscaProps) {
               justifyContent: 'center'
             }}
           >
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={!currentBrand || !currentModel || !currentYear}
-            >
+            <Button type="submit" variant="contained" disabled={!currentBrand || !currentModel || !currentYear}>
               Consultar preço
             </Button>
           </Box>
-        </Box>
-      </Box >
+        </StyledForm>
+      </StyledContainer>
     </Box>
-  );
+  )
 }
 
 async function fetchBrands(): Promise<IMarca[] | null> {
@@ -224,7 +227,7 @@ export async function getServerSideProps(context: any) {
 
   return {
     props: {
-      brands,
+      brands
     }
   }
 }
