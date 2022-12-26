@@ -39,6 +39,11 @@ const StyledForm = styled('form')(({ theme }) => ({
   }
 }))
 
+const StyledErrorMessage = styled('p')(({ theme }) => ({
+  margin: '0px',
+  color: 'red'
+}))
+
 export default function Busca({ brands }: BuscaProps) {
   const router = useRouter()
   const [models, setModels] = useState<IModel[] | null>(null)
@@ -49,13 +54,23 @@ export default function Busca({ brands }: BuscaProps) {
       model: '',
       year: ''
     },
-    onSubmit: async () => {
-      const { brand, model, year } = currentForm.values
+    validate: (values) => {
+      const errors: { [key: string]: any } = {}
+      if (!values.brand.trim()) {
+        errors.brand = 'Obrigatório'
+      }
+      if (!values.model.trim()) {
+        errors.model = 'Obrigatório'
+      }
+      if (!values.year.trim()) {
+        errors.year = 'Obrigatório'
+      }
+      return errors
+    },
+    onSubmit: async (values) => {
+      const { brand, model, year } = values
 
       router.push(`/resultado?brand=${brand}&model=${model}&year=${year}`)
-    },
-    validate: (values) => {
-      return {}
     }
   })
 
@@ -98,7 +113,7 @@ export default function Busca({ brands }: BuscaProps) {
         <Typography component="h2" variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
           Consulte o valor de um veículo de forma gratuita
         </Typography>
-        <StyledForm onSubmit={currentForm.handleSubmit}>
+        <StyledForm onSubmit={currentForm.handleSubmit} noValidate>
           <FormControl fullWidth sx={{ marginBottom: 3 }}>
             <InputLabel id="brands-select">Marca</InputLabel>
             <Select
@@ -121,6 +136,7 @@ export default function Busca({ brands }: BuscaProps) {
                 </MenuItem>
               ))}
             </Select>
+            <StyledErrorMessage>{currentForm.errors.brand}</StyledErrorMessage>
           </FormControl>
           <FormControl fullWidth sx={{ marginBottom: 3 }}>
             <InputLabel id="models-select">Modelo</InputLabel>
@@ -145,6 +161,7 @@ export default function Busca({ brands }: BuscaProps) {
                 </MenuItem>
               ))}
             </Select>
+            <StyledErrorMessage>{currentForm.errors.model}</StyledErrorMessage>
           </FormControl>
           {!currentForm.values.model ? (
             <></>
@@ -169,6 +186,7 @@ export default function Busca({ brands }: BuscaProps) {
                   </MenuItem>
                 ))}
               </Select>
+              <StyledErrorMessage>{currentForm.errors.year}</StyledErrorMessage>
             </FormControl>
           )}
           <Box

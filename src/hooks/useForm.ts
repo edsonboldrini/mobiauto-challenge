@@ -19,8 +19,8 @@ interface ChangeEvents {
 }
 
 function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
-  const [values, setValues] = useState(initialValues)
-  const [errors, setErrors] = useState({})
+  const [values, setValues] = useState<{ [key: string]: any }>(initialValues)
+  const [errors, setErrors] = useState<{ [key: string]: any }>({})
 
   function handleChange(event: ChangeEvents) {
     setValues({ ...values, [event.target.name]: event.target.value })
