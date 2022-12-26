@@ -2,6 +2,9 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import { IVehicleData } from '../src/types'
+import { FipeService } from '../src/services/FipeService'
+
+const fipeService = FipeService()
 
 interface ResultadoProps {
   vehicleData: IVehicleData | null
@@ -56,20 +59,6 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
   )
 }
 
-async function fetchPrice(brand: string, model: string, year: string): Promise<IVehicleData | null> {
-  try {
-    const response = await fetch(
-      `https://parallelum.com.br/fipe/api/v1/carros/marcas/${brand}/modelos/${model}/anos/${year}`
-    )
-    const data = await response.json()
-
-    return data
-  } catch (e) {
-    console.log(e)
-    return null
-  }
-}
-
 export async function getServerSideProps(context: any) {
   const { brand, model, year } = context.query
 
@@ -83,11 +72,11 @@ export async function getServerSideProps(context: any) {
     }
   }
 
-  const price = await fetchPrice(brand, model, year)
+  const vehicleData = await fipeService.getVehicleData(brand, model, year)
 
   return {
     props: {
-      price
+      vehicleData
     }
   }
 }

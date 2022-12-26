@@ -10,6 +10,9 @@ import { FormControl } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { IMarca, IModelo, IYear } from '../src/types'
 import { useRouter } from 'next/router'
+import { FipeService } from '../src/services/FipeService'
+
+const fipeService = FipeService()
 
 interface BuscaProps {
   brands: IMarca[] | null
@@ -50,7 +53,7 @@ export default function Busca({ brands }: BuscaProps) {
     setCurrentModel('')
 
     if (event.target.value) {
-      const newModels: IModelo[] | null = await fetchModels(event.target.value)
+      const newModels: IModelo[] | null = await fipeService.getAllModelsByBrand(event.target.value)
 
       if (newModels?.length) {
         setModels(newModels)
@@ -63,7 +66,7 @@ export default function Busca({ brands }: BuscaProps) {
     setCurrentYear('')
 
     if (event.target.value) {
-      const newYears: IModelo[] | null = await fetchYears(currentBrand, event.target.value)
+      const newYears: IModelo[] | null = await fipeService.getAllYearsByBrandAndModel(currentBrand, event.target.value)
 
       if (newYears?.length) {
         setYears(newYears)
@@ -186,44 +189,8 @@ export default function Busca({ brands }: BuscaProps) {
   )
 }
 
-async function fetchBrands(): Promise<IMarca[] | null> {
-  try {
-    const response = await fetch('https://parallelum.com.br/fipe/api/v1/carros/marcas')
-    const data = await response.json()
-
-    return data
-  } catch (e) {
-    console.log(e)
-    return null
-  }
-}
-
-async function fetchModels(brand: string): Promise<IModelo[] | null> {
-  try {
-    const response = await fetch(`https://parallelum.com.br/fipe/api/v1/carros/marcas/${brand}/modelos`)
-    const data = await response.json()
-
-    return data.modelos
-  } catch (e) {
-    console.log(e)
-    return null
-  }
-}
-
-async function fetchYears(brand: string, model: string): Promise<IYear[] | null> {
-  try {
-    const response = await fetch(`https://parallelum.com.br/fipe/api/v1/carros/marcas/${brand}/modelos/${model}/anos`)
-    const data = await response.json()
-
-    return data
-  } catch (e) {
-    console.log(e)
-    return null
-  }
-}
-
 export async function getServerSideProps(context: any) {
-  const brands = await fetchBrands()
+  const brands = await fipeService.getAllBrands()
 
   return {
     props: {
