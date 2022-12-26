@@ -4,8 +4,6 @@ import Typography from '@mui/material/Typography'
 import { IVehicleData } from '../src/types'
 import { FipeService } from '../src/services/FipeService'
 
-const fipeService = FipeService()
-
 interface ResultadoProps {
   vehicleData: IVehicleData | null
 }
@@ -72,7 +70,7 @@ export async function getServerSideProps(context: any) {
     }
   }
 
-  const vehicleData = await fipeService.getVehicleData(brand, model, year)
+  const vehicleData = await FipeService.getVehicleData(brand, model, year)
 
   return {
     props: {

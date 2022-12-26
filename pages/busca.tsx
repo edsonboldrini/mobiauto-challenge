@@ -12,8 +12,6 @@ import { IMarca, IModelo, IYear } from '../src/types'
 import { useRouter } from 'next/router'
 import { FipeService } from '../src/services/FipeService'
 
-const fipeService = FipeService()
-
 interface BuscaProps {
   brands: IMarca[] | null
 }
@@ -53,7 +51,7 @@ export default function Busca({ brands }: BuscaProps) {
     setCurrentModel('')
 
     if (event.target.value) {
-      const newModels: IModelo[] | null = await fipeService.getAllModelsByBrand(event.target.value)
+      const newModels: IModelo[] | null = await FipeService.getAllModelsByBrand(event.target.value)
 
       if (newModels?.length) {
         setModels(newModels)
@@ -66,7 +64,7 @@ export default function Busca({ brands }: BuscaProps) {
     setCurrentYear('')
 
     if (event.target.value) {
-      const newYears: IModelo[] | null = await fipeService.getAllYearsByBrandAndModel(currentBrand, event.target.value)
+      const newYears: IModelo[] | null = await FipeService.getAllYearsByBrandAndModel(currentBrand, event.target.value)
 
       if (newYears?.length) {
         setYears(newYears)
@@ -190,7 +188,7 @@ export default function Busca({ brands }: BuscaProps) {
 }
 
 export async function getServerSideProps(context: any) {
-  const brands = await fipeService.getAllBrands()
+  const brands = await FipeService.getAllBrands()
 
   return {
     props: {
