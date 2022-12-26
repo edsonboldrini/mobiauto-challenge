@@ -8,12 +8,13 @@ import { red } from '@mui/material/colors'
 import InputLabel from '@mui/material/InputLabel'
 import { FormControl } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { IMarca, IModelo, IYear } from '../src/types'
+import { IBrand, IModel, IYear } from '../src/types'
 import { useRouter } from 'next/router'
 import { FipeService } from '../src/services/FipeService'
+import { useForm } from '../src/hooks/useForm'
 
 interface BuscaProps {
-  brands: IMarca[] | null
+  brands: IBrand[] | null
 }
 
 const StyledContainer = styled('div')(({ theme }) => ({
@@ -40,18 +41,27 @@ const StyledForm = styled('form')(({ theme }) => ({
 
 export default function Busca({ brands }: BuscaProps) {
   const router = useRouter()
-  const [currentBrand, setCurrentBrand] = useState<string>('')
-  const [currentModel, setCurrentModel] = useState<string>('')
-  const [currentYear, setCurrentYear] = useState<string>('')
-  const [models, setModels] = useState<IModelo[] | null>(null)
+  const [models, setModels] = useState<IModel[] | null>(null)
   const [years, setYears] = useState<IYear[] | null>(null)
+  const currentForm = useForm({
+    initialValues: {
+      brand: '',
+      model: '',
+      year: ''
+    },
+    onSubmit: async () => {
+      const { brand, model, year } = currentForm.values
+
+      router.push(`/resultado?brand=${brand}&model=${model}&year=${year}`)
+    },
+    validate: (values) => {
+      return {}
+    }
+  })
 
   const handleBrandChange = async (event: SelectChangeEvent<string>) => {
-    setCurrentBrand(event.target.value)
-    setCurrentModel('')
-
     if (event.target.value) {
-      const newModels: IModelo[] | null = await FipeService.getAllModelsByBrand(event.target.value)
+      const newModels: IModel[] | null = await FipeService.getAllModelsByBrand(event.target.value)
 
       if (newModels?.length) {
         setModels(newModels)
@@ -60,27 +70,16 @@ export default function Busca({ brands }: BuscaProps) {
   }
 
   const handleModelChange = async (event: SelectChangeEvent<string>) => {
-    setCurrentModel(event.target.value)
-    setCurrentYear('')
-
     if (event.target.value) {
-      const newYears: IModelo[] | null = await FipeService.getAllYearsByBrandAndModel(currentBrand, event.target.value)
+      const newYears: IModel[] | null = await FipeService.getAllYearsByBrandAndModel(
+        currentForm.values.brand,
+        event.target.value
+      )
 
       if (newYears?.length) {
         setYears(newYears)
       }
     }
-  }
-
-  const handleYearChange = async (event: SelectChangeEvent<string>) => {
-    setCurrentYear(event.target.value)
-  }
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-
-    router.push(`/resultado?brand=${data.get('brand')}&model=${data.get('model')}&year=${data.get('year')}`)
   }
 
   return (
@@ -99,23 +98,22 @@ export default function Busca({ brands }: BuscaProps) {
         <Typography component="h2" variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
           Consulte o valor de um veículo de forma gratuita
         </Typography>
-        <StyledForm
-          // component="form"
-          onSubmit={handleSubmit}
-          noValidate
-        >
+        <StyledForm onSubmit={currentForm.handleSubmit}>
           <FormControl fullWidth sx={{ marginBottom: 3 }}>
             <InputLabel id="brands-select">Marca</InputLabel>
             <Select
               labelId="brands-select"
               id="brand"
               name="brand"
-              value={currentBrand}
               label="Marca"
-              onChange={handleBrandChange}
               margin="none"
               required
               fullWidth
+              value={currentForm.values.brand}
+              onChange={(event) => {
+                currentForm.handleChange(event)
+                handleBrandChange(event)
+              }}
             >
               {brands?.map((element) => (
                 <MenuItem value={element.codigo} key={element.codigo}>
@@ -130,13 +128,16 @@ export default function Busca({ brands }: BuscaProps) {
               labelId="models-select"
               id="model"
               name="model"
-              value={currentModel}
               label="Modelo"
-              onChange={handleModelChange}
               margin="none"
               required
               fullWidth
-              disabled={!currentBrand}
+              disabled={!currentForm.values.brand}
+              value={currentForm.values.model}
+              onChange={(event) => {
+                currentForm.handleChange(event)
+                handleModelChange(event)
+              }}
             >
               {models?.map((element) => (
                 <MenuItem value={element.codigo} key={element.codigo}>
@@ -145,7 +146,7 @@ export default function Busca({ brands }: BuscaProps) {
               ))}
             </Select>
           </FormControl>
-          {!currentModel ? (
+          {!currentForm.values.model ? (
             <></>
           ) : (
             <FormControl fullWidth sx={{ marginBottom: 3 }}>
@@ -154,13 +155,13 @@ export default function Busca({ brands }: BuscaProps) {
                 labelId="years-select"
                 id="year"
                 name="year"
-                value={currentYear}
                 label="Ano"
-                onChange={handleYearChange}
                 margin="none"
                 required
                 fullWidth
-                disabled={!currentModel}
+                disabled={!currentForm.values.model}
+                value={currentForm.values.year}
+                onChange={currentForm.handleChange}
               >
                 {years?.map((element) => (
                   <MenuItem value={element.codigo} key={element.codigo}>
@@ -177,7 +178,11 @@ export default function Busca({ brands }: BuscaProps) {
               justifyContent: 'center'
             }}
           >
-            <Button type="submit" variant="contained" disabled={!currentBrand || !currentModel || !currentYear}>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!currentForm.values.brand || !currentForm.values.model || !currentForm.values.year}
+            >
               Consultar preço
             </Button>
           </Box>

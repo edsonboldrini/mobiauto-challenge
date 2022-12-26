@@ -1,9 +1,9 @@
-export interface IMarca {
+export interface IBrand {
   nome: string
   codigo: string
 }
 
-export interface IModelo {
+export interface IModel {
   nome: string
   codigo: string
 }
