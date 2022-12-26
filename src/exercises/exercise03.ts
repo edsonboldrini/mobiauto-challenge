@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch'
+
 const charactersArray: string[] = ['Rick Sanchez', 'Morty Smith', 'Summer Smith', 'Beth Smith', 'Jerry Smith']
 const keyMapping: { [key: string]: string } = {
   'nome': 'name',
