@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { red } from '@mui/material/colors'
 import InputLabel from '@mui/material/InputLabel'
 import { FormControl } from '@mui/material'
@@ -56,13 +56,13 @@ export default function Busca({ brands }: BuscaProps) {
     },
     validate: (values) => {
       const errors: { [key: string]: any } = {}
-      if (!values.brand.trim()) {
+      if (!values?.brand) {
         errors.brand = 'Obrigatório'
       }
-      if (!values.model.trim()) {
+      if (!values?.model) {
         errors.model = 'Obrigatório'
       }
-      if (!values.year.trim()) {
+      if (!values?.year) {
         errors.year = 'Obrigatório'
       }
       return errors
@@ -75,6 +75,8 @@ export default function Busca({ brands }: BuscaProps) {
   })
 
   const handleBrandChange = async (event: SelectChangeEvent<string>) => {
+    currentForm.handleChange(event)
+
     if (event.target.value) {
       const newModels: IModel[] | null = await FipeService.getAllModelsByBrand(event.target.value)
 
@@ -85,6 +87,8 @@ export default function Busca({ brands }: BuscaProps) {
   }
 
   const handleModelChange = async (event: SelectChangeEvent<string>) => {
+    currentForm.handleChange(event)
+
     if (event.target.value) {
       const newYears: IModel[] | null = await FipeService.getAllYearsByBrandAndModel(
         currentForm.values.brand,
@@ -125,10 +129,7 @@ export default function Busca({ brands }: BuscaProps) {
               required
               fullWidth
               value={currentForm.values.brand}
-              onChange={(event) => {
-                currentForm.handleChange(event)
-                handleBrandChange(event)
-              }}
+              onChange={handleBrandChange}
             >
               {brands?.map((element) => (
                 <MenuItem value={element.codigo} key={element.codigo}>
@@ -150,10 +151,7 @@ export default function Busca({ brands }: BuscaProps) {
               fullWidth
               disabled={!currentForm.values.brand}
               value={currentForm.values.model}
-              onChange={(event) => {
-                currentForm.handleChange(event)
-                handleModelChange(event)
-              }}
+              onChange={handleModelChange}
             >
               {models?.map((element) => (
                 <MenuItem value={element.codigo} key={element.codigo}>
