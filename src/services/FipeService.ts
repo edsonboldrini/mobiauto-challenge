@@ -1,8 +1,4 @@
-export {
-  FipeService
-}
-
-const FipeService = {
+export const FipeService = {
   async getAllBrands() {
     try {
       const response = await fetch('https://parallelum.com.br/fipe/api/v1/carros/marcas')
