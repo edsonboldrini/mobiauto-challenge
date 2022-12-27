@@ -230,6 +230,7 @@ export async function getStaticProps(context: any) {
   return {
     props: {
       brands
-    }
+    },
+    revalidate: 600
   }
 }
