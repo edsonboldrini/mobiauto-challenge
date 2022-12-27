@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import { FipeService } from '../src/services/FipeService'
 import { useForm } from '../src/hooks/useForm'
 import Head from 'next/head'
+import theme from '../src/config/theme'
 
 interface BuscaProps {
   brands: IBrand[] | null
@@ -205,6 +206,7 @@ export default function Busca({ brands }: BuscaProps) {
             <Box
               sx={{
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}
@@ -216,6 +218,7 @@ export default function Busca({ brands }: BuscaProps) {
               >
                 Consultar preço
               </Button>
+              <p style={{ marginTop: '16px', color: theme.palette.grey[200] }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ marginTop: '16px', color: theme.palette.grey[200] }}>https://github.com/edsonboldrini/mobiauto-challenge</a></p>
             </Box>
           </StyledForm>
         </StyledContainer>
