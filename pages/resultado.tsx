@@ -60,8 +60,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
 export async function getServerSideProps(context: any) {
   const { brand, model, year } = context.query
 
-  if (!brand || !model || !year) {
-    console.log('Redirect please!!')
+  if (!brand || !model || !year) {    
     return {
       redirect: {
         permanent: false,
@@ -71,6 +70,15 @@ export async function getServerSideProps(context: any) {
   }
 
   const vehicleData = await FipeService.getVehicleData(brand, model, year)
+
+  if (!vehicleData) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/busca'
+      }
+    }
+  }
 
   return {
     props: {
