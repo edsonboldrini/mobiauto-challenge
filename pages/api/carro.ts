@@ -14,6 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.redirect(`/busca`)
   }
 
-  res.setPreviewData({})
+  res.setPreviewData(vehicleData)
   res.redirect(`/resultado?brand=${brand}&model=${model}&year=${year}`)
 }

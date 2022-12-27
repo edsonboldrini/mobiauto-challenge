@@ -3,6 +3,8 @@ import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import { IVehicleData } from '../src/types'
 import { FipeService } from '../src/services/FipeService'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 interface ResultadoProps {
   vehicleData: IVehicleData | null
@@ -21,6 +23,8 @@ const StyledContainer = styled('div')(({ theme }) => ({
 }))
 
 export default function Resultado({ vehicleData }: ResultadoProps) {
+  const router = useRouter()
+
   return (
     <Box
       sx={{
@@ -30,13 +34,26 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
         justifyContent: 'center'
       }}
     >
+      <Head>
+        <title>{vehicleData?.Modelo}</title>
+        <meta property="og:url" content={router.asPath} />
+        <meta property="og:type" content="website" />
+        {/* <meta property="fb:app_id" content="your fb id" /> */}
+        <meta property="og:title" content={vehicleData?.Modelo} />
+        {/* <meta name="twitter:card" content="summary" /> */}
+        <meta
+          property="og:description"
+          content={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`}
+        />
+        {/* <meta property="og:image" content={photo?.url} /> */}
+      </Head>
       <StyledContainer>
         <Typography
           component="h1"
           variant="h4"
           sx={{ mb: 2, fontWeight: 'bold', color: '#454357', textAlign: 'center' }}
         >
-          Tabela Fipe: Preço {vehicleData?.Modelo}
+          Tabela Fipe Preço: {vehicleData?.Marca} {vehicleData?.Modelo} {vehicleData?.AnoModelo} {vehicleData?.Combustivel} 
         </Typography>
         <Box
           sx={{
@@ -86,3 +103,23 @@ export async function getServerSideProps(context: any) {
     }
   }
 }
+
+// export async function getStaticProps(context: any) {
+//   console.log(context)
+//   const vehicleData = context.previewData
+
+//   if (!vehicleData) {
+//     return {
+//       redirect: {
+//         permanent: false,
+//         destination: '/busca'
+//       }
+//     }
+//   }
+
+//   return {
+//     props: {
+//       vehicleData
+//     }
+//   }
+// }
