@@ -39,7 +39,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
         <meta property="og:url" content={router.asPath} />
         <meta property="og:type" content="website" />
         {/* <meta property="fb:app_id" content="your fb id" /> */}
-        <meta property="og:title" content={vehicleData?.Modelo} />
+        <meta property="og:title" content={`${vehicleData?.Modelo} - ${vehicleData?.Valor}`} />
         {/* <meta name="twitter:card" content="summary" /> */}
         <meta
           property="og:description"
