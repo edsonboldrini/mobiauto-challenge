@@ -26,14 +26,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
   const router = useRouter()
 
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
+    <>
       <Head>
         <title>{vehicleData?.Modelo}</title>
         <meta property="og:url" content={router.asPath} />
@@ -45,39 +38,48 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
           property="og:description"
           content={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`}
         />
-        {/* <meta property="og:image" content={photo?.url} /> */}
+        {/* <meta property="og:image" content={url} /> */}
       </Head>
-      <StyledContainer>
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ mb: 2, fontWeight: 'bold', color: '#454357', textAlign: 'center' }}
-        >
-          Tabela Fipe Preço: {vehicleData?.Marca} {vehicleData?.Modelo} {vehicleData?.AnoModelo} {vehicleData?.Combustivel} 
-        </Typography>
-        <Box
-          sx={{
-            backgroundColor: '#43a48d',
-            padding: 2,
-            borderRadius: 10,
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: 'white',
-            mb: 2
-          }}
-        >
-          {vehicleData?.Valor}
-        </Box>
-        <Typography sx={{ color: '#87859a' }}>Este é o preço de compra do veículo</Typography>
-      </StyledContainer>
-    </Box>
+      <Box
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <StyledContainer>
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{ mb: 2, fontWeight: 'bold', color: '#454357', textAlign: 'center' }}
+          >
+            Tabela Fipe Preço: {vehicleData?.Marca} {vehicleData?.Modelo} {vehicleData?.AnoModelo} {vehicleData?.Combustivel}
+          </Typography>
+          <Box
+            sx={{
+              backgroundColor: '#43a48d',
+              padding: 2,
+              borderRadius: 10,
+              fontSize: 24,
+              fontWeight: 'bold',
+              color: 'white',
+              mb: 2
+            }}
+          >
+            {vehicleData?.Valor}
+          </Box>
+          <Typography sx={{ color: '#87859a' }}>Este é o preço de compra do veículo</Typography>
+        </StyledContainer>
+      </Box>
+    </>
   )
 }
 
 export async function getServerSideProps(context: any) {
   const { brand, model, year } = context.query
 
-  if (!brand || !model || !year) {    
+  if (!brand || !model || !year) {
     return {
       redirect: {
         permanent: false,
@@ -103,23 +105,3 @@ export async function getServerSideProps(context: any) {
     }
   }
 }
-
-// export async function getStaticProps(context: any) {
-//   console.log(context)
-//   const vehicleData = context.previewData
-
-//   if (!vehicleData) {
-//     return {
-//       redirect: {
-//         permanent: false,
-//         destination: '/busca'
-//       }
-//     }
-//   }
-
-//   return {
-//     props: {
-//       vehicleData
-//     }
-//   }
-// }
