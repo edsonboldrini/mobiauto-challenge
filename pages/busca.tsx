@@ -72,7 +72,7 @@ export default function Busca({ brands }: BuscaProps) {
     onSubmit: async (values) => {
       const { brand, model, year } = values
 
-      router.push(`/resultado?brand=${brand}&model=${model}&year=${year}`)
+      router.push(`/resultado/${brand}/${model}/${year}`)
     }
   })
 
