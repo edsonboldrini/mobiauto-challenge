@@ -78,7 +78,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
             {vehicleData?.Valor}
           </Box>
           <Typography sx={{ color: theme.palette.grey[200] }}>Este é o preço de compra do veículo</Typography>
-          <p style={{ marginTop: '16px', color: theme.palette.grey[200] }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ marginTop: '16px', color: theme.palette.grey[200] }}>https://github.com/edsonboldrini/mobiauto-challenge</a></p>
+          <Typography sx={{ color: theme.palette.grey[200], textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ color: theme.palette.grey[200] }}>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
         </StyledContainer>
       </Box>
     </>
