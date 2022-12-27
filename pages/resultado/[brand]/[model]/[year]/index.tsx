@@ -34,14 +34,12 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
         <title>{vehicleData?.Modelo}</title>
         <meta property="og:url" content={router.asPath} />
         <meta property="og:type" content="website" />
-        {/* <meta property="fb:app_id" content="your fb id" /> */}
+        <meta property="og:image" content="https://www.mobiauto.com.br/images/logo.png" />
         <meta property="og:title" content={`${vehicleData?.Modelo} - ${vehicleData?.Valor}`} />
-        {/* <meta name="twitter:card" content="summary" /> */}
         <meta
           property="og:description"
           content={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`}
         />
-        {/* <meta property="og:image" content={url} /> */}
       </Head>
       <Box
         sx={{

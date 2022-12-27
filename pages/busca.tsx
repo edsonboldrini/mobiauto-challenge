@@ -109,14 +109,12 @@ export default function Busca({ brands }: BuscaProps) {
         <title>Mobiauto Challenge</title>
         <meta property="og:url" content={router.asPath} />
         <meta property="og:type" content="website" />
-        {/* <meta property="fb:app_id" content="your fb id" /> */}
-        <meta property="og:title" content={`Mobiauto Challenge Busca`} />
-        {/* <meta name="twitter:card" content="summary" /> */}
+        <meta property="og:image" content="https://www.mobiauto.com.br/images/logo.png" />
+        <meta property="og:title" content="Mobiauto Challenge Busca" />
         <meta
           property="og:description"
-          content={`Consulte agora carros e seus preços na tabela Fipe`}
+          content="Consulte agora carros e seus preços na tabela Fipe"
         />
-        {/* <meta property="og:image" content={url} /> */}
       </Head>
       <Box
         sx={{
