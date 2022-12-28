@@ -1,5 +1,3 @@
-import Box from '@mui/material/Box'
-import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import { IVehicleData } from '../src/types'
 import { FipeService } from '../src/services/FipeService'
@@ -7,10 +5,8 @@ import theme from '../src/config/theme'
 import DefaultLayout from '../src/layouts/DefaultLayout'
 import CustomPill from '../src/components/CustomPill'
 import StyledContainer from '../src/components/CustomPage'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Button } from '@mui/material'
-import Link from 'next/link'
 
 interface ResultadoProps {
   vehicleData: IVehicleData | null
@@ -22,11 +18,13 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
   return (
     <DefaultLayout title={vehicleData?.Modelo} metaTitle={`${vehicleData?.Modelo} - ${vehicleData?.Valor}`} metaDescription={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`} >
       <StyledContainer backgroundColor={theme.palette.success.light}>
-        <Link href='/busca' style={{ textDecoration: 'none' }} passHref>
-          <Button variant="contained" sx={{ backgroundColor: theme.palette.grey[200], color: 'white', mb: 2 }}>
-            Voltar para busca
-          </Button>
-        </Link>
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: theme.palette.grey[200], color: 'white', mb: 2 }}
+          onClick={() => router.back()}
+        >
+          Voltar para busca
+        </Button>
         <Typography
           component="h1"
           variant="h4"

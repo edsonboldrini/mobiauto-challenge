@@ -1,5 +1,3 @@
-import Box from '@mui/material/Box'
-import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import { IVehicleData } from '../../../../../src/types'
 import { FipeService } from '../../../../../src/services/FipeService'
@@ -7,10 +5,8 @@ import theme from '../../../../../src/config/theme'
 import DefaultLayout from '../../../../../src/layouts/DefaultLayout'
 import CustomPill from '../../../../../src/components/CustomPill'
 import StyledContainer from '../../../../../src/components/CustomPage'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Button } from '@mui/material'
-import Link from 'next/link'
 
 interface ResultadoProps {
   vehicleData: IVehicleData | null
