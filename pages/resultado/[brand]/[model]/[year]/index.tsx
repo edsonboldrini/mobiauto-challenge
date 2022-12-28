@@ -22,11 +22,13 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
   return (
     <DefaultLayout title={vehicleData?.Modelo} metaTitle={`${vehicleData?.Modelo} - ${vehicleData?.Valor}`} metaDescription={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`} >
       <StyledContainer backgroundColor={theme.palette.success.light}>
-        <Link href='/busca' style={{ textDecoration: 'none' }} passHref>
-          <Button variant="contained" sx={{ backgroundColor: theme.palette.grey[200], color: 'white', mb: 2 }}>
-            Voltar para busca
-          </Button>
-        </Link>
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: theme.palette.grey[200], color: 'white', mb: 2 }}
+          onClick={() => router.back()}
+        >
+          Voltar para busca
+        </Button>
         <Typography
           component="h1"
           variant="h4"

@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem'
 import { useState } from 'react'
 import { red } from '@mui/material/colors'
 import InputLabel from '@mui/material/InputLabel'
-import { FormControl } from '@mui/material'
+import { CircularProgress, FormControl } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { IBrand, IModel, IYear } from '../src/types'
 import { useRouter } from 'next/router'
@@ -40,6 +40,7 @@ export default function Busca({ brands }: BuscaProps) {
   const router = useRouter()
   const [models, setModels] = useState<IModel[] | null>(null)
   const [years, setYears] = useState<IYear[] | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const currentForm = useForm({
     initialValues: {
       brand: '',
@@ -60,6 +61,7 @@ export default function Busca({ brands }: BuscaProps) {
       return errors
     },
     onSubmit: async (values) => {
+      setIsLoading(true)
       const { brand, model, year } = values
 
       router.push(`/resultado/${brand}/${model}/${year}`)
@@ -70,11 +72,13 @@ export default function Busca({ brands }: BuscaProps) {
     currentForm.handleChange(event)
 
     if (event.target.value) {
+      setIsLoading(true)
       const newModels: IModel[] | null = await FipeService.getAllModelsByBrand(event.target.value)
 
       if (newModels?.length) {
         setModels(newModels)
       }
+      setIsLoading(false)
     }
   }
 
@@ -82,6 +86,7 @@ export default function Busca({ brands }: BuscaProps) {
     currentForm.handleChange(event)
 
     if (event.target.value) {
+      setIsLoading(true)
       const newYears: IModel[] | null = await FipeService.getAllYearsByBrandAndModel(
         currentForm.values.brand,
         event.target.value
@@ -90,6 +95,7 @@ export default function Busca({ brands }: BuscaProps) {
       if (newYears?.length) {
         setYears(newYears)
       }
+      setIsLoading(false)
     }
   }
 
@@ -134,7 +140,7 @@ export default function Busca({ brands }: BuscaProps) {
               margin="none"
               required
               fullWidth
-              disabled={!currentForm.values.brand}
+              disabled={isLoading || !currentForm.values.brand}
               value={currentForm.values.model}
               onChange={handleModelChange}
             >
@@ -159,7 +165,7 @@ export default function Busca({ brands }: BuscaProps) {
                 margin="none"
                 required
                 fullWidth
-                disabled={!currentForm.values.model}
+                disabled={isLoading || !currentForm.values.model}
                 value={currentForm.values.year}
                 onChange={currentForm.handleChange}
               >
@@ -180,13 +186,17 @@ export default function Busca({ brands }: BuscaProps) {
               justifyContent: 'center'
             }}
           >
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={!currentForm.values.brand || !currentForm.values.model || !currentForm.values.year}
-            >
-              Consultar preço
-            </Button>
+            {
+              isLoading ?
+                <CircularProgress /> :
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={isLoading || !currentForm.values.brand || !currentForm.values.model || !currentForm.values.year}
+                >
+                  Consultar preço
+                </Button>
+            }
             <Typography sx={{ color: theme.palette.grey[200], textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ color: theme.palette.grey[200] }}>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
           </Box>
         </StyledForm>
