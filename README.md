@@ -32,7 +32,7 @@ If you want to run the project
 npm run dev
 ```
 
-### Preview URL working examples:
+### Preview URL working examples
 ![image](https://user-images.githubusercontent.com/31242886/209868892-f800c59d-c0a6-4e1d-9e84-9398ae2cc95a.png)
 ![image](https://user-images.githubusercontent.com/31242886/209868967-640eca8b-8d5c-4dd0-9fdb-17a65dc0af6c.png)
 
