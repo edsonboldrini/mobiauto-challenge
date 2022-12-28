@@ -14,6 +14,7 @@ import { FipeService } from '../src/services/FipeService'
 import { useForm } from '../src/hooks/useForm'
 import Head from 'next/head'
 import theme from '../src/config/theme'
+import DefaultLayout from '../src/layouts/DefaultLayout'
 
 interface BuscaProps {
   brands: IBrand[] | null
@@ -104,124 +105,104 @@ export default function Busca({ brands }: BuscaProps) {
   }
 
   return (
-    <>
-      <Head>
-        <title>Mobiauto Challenge</title>
-        <meta property="og:url" content={router.asPath} />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.mobiauto.com.br/images/logo.png" />
-        <meta property="og:title" content="Mobiauto Challenge Busca" />
-        <meta
-          property="og:description"
-          content="Consulte agora carros e seus preços na tabela Fipe"
-        />
-      </Head>
-      <Box
-        sx={{
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <StyledContainer>
-          <Typography component="h1" variant="h4" sx={{ mb: 2, textAlign: 'center' }}>
-            Tabela Fipe
-          </Typography>
-          <Typography component="h2" variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
-            Consulte o valor de um veículo de forma gratuita
-          </Typography>
-          <StyledForm onSubmit={currentForm.handleSubmit} noValidate>
-            <FormControl fullWidth sx={{ marginBottom: 3 }}>
-              <InputLabel id="brands-select">Marca</InputLabel>
-              <Select
-                labelId="brands-select"
-                id="brand"
-                name="brand"
-                label="Marca"
-                margin="none"
-                required
-                fullWidth
-                value={currentForm.values.brand}
-                onChange={handleBrandChange}
-              >
-                {brands?.map((element) => (
-                  <MenuItem value={element.codigo} key={element.codigo}>
-                    {element.nome}
-                  </MenuItem>
-                ))}
-              </Select>
-              <StyledErrorMessage>{currentForm.errors.brand}</StyledErrorMessage>
-            </FormControl>
-            <FormControl fullWidth sx={{ marginBottom: 3 }}>
-              <InputLabel id="models-select">Modelo</InputLabel>
-              <Select
-                labelId="models-select"
-                id="model"
-                name="model"
-                label="Modelo"
-                margin="none"
-                required
-                fullWidth
-                disabled={!currentForm.values.brand}
-                value={currentForm.values.model}
-                onChange={handleModelChange}
-              >
-                {models?.map((element) => (
-                  <MenuItem value={element.codigo} key={element.codigo}>
-                    {element.nome}
-                  </MenuItem>
-                ))}
-              </Select>
-              <StyledErrorMessage>{currentForm.errors.model}</StyledErrorMessage>
-            </FormControl>
-            {!currentForm.values.model ? (
-              <></>
-            ) : (
-              <FormControl fullWidth sx={{ marginBottom: 3 }}>
-                <InputLabel id="years-select">Ano</InputLabel>
-                <Select
-                  labelId="years-select"
-                  id="year"
-                  name="year"
-                  label="Ano"
-                  margin="none"
-                  required
-                  fullWidth
-                  disabled={!currentForm.values.model}
-                  value={currentForm.values.year}
-                  onChange={currentForm.handleChange}
-                >
-                  {years?.map((element) => (
-                    <MenuItem value={element.codigo} key={element.codigo}>
-                      {element.nome}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <StyledErrorMessage>{currentForm.errors.year}</StyledErrorMessage>
-              </FormControl>
-            )}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+    <DefaultLayout metaTitle="Mobiauto Challenge - Busca">
+      <StyledContainer>
+        <Typography component="h1" variant="h4" sx={{ mb: 2, textAlign: 'center' }}>
+          Tabela Fipe
+        </Typography>
+        <Typography component="h2" variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
+          Consulte o valor de um veículo de forma gratuita
+        </Typography>
+        <StyledForm onSubmit={currentForm.handleSubmit} noValidate>
+          <FormControl fullWidth sx={{ marginBottom: 3 }}>
+            <InputLabel id="brands-select">Marca</InputLabel>
+            <Select
+              labelId="brands-select"
+              id="brand"
+              name="brand"
+              label="Marca"
+              margin="none"
+              required
+              fullWidth
+              value={currentForm.values.brand}
+              onChange={handleBrandChange}
             >
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={!currentForm.values.brand || !currentForm.values.model || !currentForm.values.year}
+              {brands?.map((element) => (
+                <MenuItem value={element.codigo} key={element.codigo}>
+                  {element.nome}
+                </MenuItem>
+              ))}
+            </Select>
+            <StyledErrorMessage>{currentForm.errors.brand}</StyledErrorMessage>
+          </FormControl>
+          <FormControl fullWidth sx={{ marginBottom: 3 }}>
+            <InputLabel id="models-select">Modelo</InputLabel>
+            <Select
+              labelId="models-select"
+              id="model"
+              name="model"
+              label="Modelo"
+              margin="none"
+              required
+              fullWidth
+              disabled={!currentForm.values.brand}
+              value={currentForm.values.model}
+              onChange={handleModelChange}
+            >
+              {models?.map((element) => (
+                <MenuItem value={element.codigo} key={element.codigo}>
+                  {element.nome}
+                </MenuItem>
+              ))}
+            </Select>
+            <StyledErrorMessage>{currentForm.errors.model}</StyledErrorMessage>
+          </FormControl>
+          {!currentForm.values.model ? (
+            <></>
+          ) : (
+            <FormControl fullWidth sx={{ marginBottom: 3 }}>
+              <InputLabel id="years-select">Ano</InputLabel>
+              <Select
+                labelId="years-select"
+                id="year"
+                name="year"
+                label="Ano"
+                margin="none"
+                required
+                fullWidth
+                disabled={!currentForm.values.model}
+                value={currentForm.values.year}
+                onChange={currentForm.handleChange}
               >
-                Consultar preço
-              </Button>
-              <Typography sx={{ color: theme.palette.grey[200], textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ color: theme.palette.grey[200] }}>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
-            </Box>
-          </StyledForm>
-        </StyledContainer>
-      </Box>
-    </>
+                {years?.map((element) => (
+                  <MenuItem value={element.codigo} key={element.codigo}>
+                    {element.nome}
+                  </MenuItem>
+                ))}
+              </Select>
+              <StyledErrorMessage>{currentForm.errors.year}</StyledErrorMessage>
+            </FormControl>
+          )}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!currentForm.values.brand || !currentForm.values.model || !currentForm.values.year}
+            >
+              Consultar preço
+            </Button>
+            <Typography sx={{ color: theme.palette.grey[200], textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ color: theme.palette.grey[200] }}>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
+          </Box>
+        </StyledForm>
+      </StyledContainer>
+    </DefaultLayout >
   )
 }
 
