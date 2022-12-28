@@ -5,6 +5,8 @@ import { IVehicleData } from '../src/types'
 import { FipeService } from '../src/services/FipeService'
 import theme from '../src/config/theme'
 import DefaultLayout from '../src/layouts/DefaultLayout'
+import CustomPill from '../src/components/CustomPill'
+import StyledContainer from '../src/components/StyledContainer'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Button } from '@mui/material'
@@ -14,24 +16,12 @@ interface ResultadoProps {
   vehicleData: IVehicleData | null
 }
 
-const StyledContainer = styled('div')(({ theme }) => ({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  backgroundColor: theme.palette.success.light,
-  padding: 48,
-  [theme.breakpoints.down('md')]: {
-    padding: 24
-  }
-}))
-
 export default function Resultado({ vehicleData }: ResultadoProps) {
   const router = useRouter()
 
   return (
     <DefaultLayout title={vehicleData?.Modelo} metaTitle={`${vehicleData?.Modelo} - ${vehicleData?.Valor}`} metaDescription={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`} >
-      <StyledContainer>
+      <StyledContainer backgroundColor={theme.palette.success.light}>
         <Link href='/busca' style={{ textDecoration: 'none' }} passHref>
           <Button variant="contained" sx={{ backgroundColor: theme.palette.grey[200], color: 'white', mb: 2 }}>
             Voltar para busca
@@ -44,19 +34,11 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
         >
           Tabela Fipe Preço: {vehicleData?.Marca} {vehicleData?.Modelo} {vehicleData?.AnoModelo} {vehicleData?.Combustivel}
         </Typography>
-        <Box
-          sx={{
-            backgroundColor: theme.palette.success.main,
-            padding: 2,
-            borderRadius: 10,
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: 'white',
-            mb: 2
-          }}
-        >
-          {vehicleData?.Valor}
-        </Box>
+        <CustomPill
+          backgroundColor={theme.palette.success.main}
+          textColor='white'
+          content={`${vehicleData?.Valor}`}
+        />
         <Typography sx={{ color: theme.palette.grey[200] }}>Este é o preço de compra do veículo</Typography>
         <Typography sx={{ color: theme.palette.grey[200], textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ color: theme.palette.grey[200] }}>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
       </StyledContainer>

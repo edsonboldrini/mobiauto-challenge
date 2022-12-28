@@ -2,14 +2,14 @@ import Box from "@mui/material/Box"
 import Head from "next/head"
 import { useRouter } from "next/router"
 
-type Props = {
-  children: JSX.Element
+interface DefaultLayoutProps {
+  children: React.ReactNode
   title?: string
   metaTitle?: string
   metaDescription?: string
 }
 
-export default function DefaultLayout({ children, title = 'Mobiauto Challenge', metaTitle = 'Mobiauto Challenge', metaDescription = 'Consulte agora carros e seus preços na tabela Fipe' }: Props) {
+export default function DefaultLayout({ children, title = 'Mobiauto Challenge', metaTitle = 'Mobiauto Challenge', metaDescription = 'Consulte agora carros e seus preços na tabela Fipe' }: DefaultLayoutProps) {
   const router = useRouter()
 
   return (

@@ -15,22 +15,11 @@ import { useForm } from '../src/hooks/useForm'
 import Head from 'next/head'
 import theme from '../src/config/theme'
 import DefaultLayout from '../src/layouts/DefaultLayout'
+import StyledContainer from '../src/components/StyledContainer'
 
 interface BuscaProps {
   brands: IBrand[] | null
 }
-
-const StyledContainer = styled('div')(({ theme }) => ({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  backgroundColor: red[50],
-  padding: 48,
-  [theme.breakpoints.down('md')]: {
-    padding: 24
-  }
-}))
 
 const StyledForm = styled('form')(({ theme }) => ({
   width: '50%',
@@ -106,7 +95,7 @@ export default function Busca({ brands }: BuscaProps) {
 
   return (
     <DefaultLayout metaTitle="Mobiauto Challenge - Busca">
-      <StyledContainer>
+      <StyledContainer backgroundColor={red[50]}>
         <Typography component="h1" variant="h4" sx={{ mb: 2, textAlign: 'center' }}>
           Tabela Fipe
         </Typography>
