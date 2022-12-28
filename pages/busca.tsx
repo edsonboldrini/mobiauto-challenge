@@ -11,11 +11,12 @@ import { styled } from '@mui/material/styles'
 import { IBrand, IModel, IYear } from '../src/types'
 import { useRouter } from 'next/router'
 import { FipeService } from '../src/services/FipeService'
-import { useForm } from '../src/hooks/useForm'
+import { ChangeEvents, useForm } from '../src/hooks/useForm'
 import Head from 'next/head'
 import theme from '../src/config/theme'
 import DefaultLayout from '../src/layouts/DefaultLayout'
-import StyledContainer from '../src/components/StyledContainer'
+import StyledContainer from '../src/components/CustomPage'
+import CustomSelect from '../src/components/CustomSelect'
 
 interface BuscaProps {
   brands: IBrand[] | null
@@ -68,7 +69,7 @@ export default function Busca({ brands }: BuscaProps) {
     }
   })
 
-  const handleBrandChange = async (event: SelectChangeEvent<string>) => {
+  const handleBrandChange = async (event: ChangeEvents) => {
     currentForm.handleChange(event)
 
     if (event.target.value) {
@@ -82,7 +83,7 @@ export default function Busca({ brands }: BuscaProps) {
     }
   }
 
-  const handleModelChange = async (event: SelectChangeEvent<string>) => {
+  const handleModelChange = async (event: ChangeEvents) => {
     currentForm.handleChange(event)
 
     if (event.target.value) {
@@ -102,81 +103,45 @@ export default function Busca({ brands }: BuscaProps) {
   return (
     <DefaultLayout metaTitle="Mobiauto Challenge - Busca">
       <StyledContainer backgroundColor={red[50]}>
-        <Typography component="h1" variant="h4" sx={{ mb: 2, textAlign: 'center' }}>
+        <Typography component="h1" variant="h4" sx={{ mb: 2, textAlign: 'center', fontWeight: 'bold' }}>
           Tabela Fipe
         </Typography>
         <Typography component="h2" variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
           Consulte o valor de um veículo de forma gratuita
         </Typography>
         <StyledForm onSubmit={currentForm.handleSubmit} noValidate>
-          <FormControl fullWidth sx={{ marginBottom: 3 }}>
-            <InputLabel id="brands-select">Marca</InputLabel>
-            <Select
-              labelId="brands-select"
-              id="brand"
-              name="brand"
-              label="Marca"
-              margin="none"
-              required
-              fullWidth
-              value={currentForm.values.brand}
-              onChange={handleBrandChange}
-            >
-              {brands?.map((element) => (
-                <MenuItem value={element.codigo} key={element.codigo}>
-                  {element.nome}
-                </MenuItem>
-              ))}
-            </Select>
-            <StyledErrorMessage>{currentForm.errors.brand}</StyledErrorMessage>
-          </FormControl>
-          <FormControl fullWidth sx={{ marginBottom: 3 }}>
-            <InputLabel id="models-select">Modelo</InputLabel>
-            <Select
-              labelId="models-select"
-              id="model"
-              name="model"
-              label="Modelo"
-              margin="none"
-              required
-              fullWidth
-              disabled={isLoading || !currentForm.values.brand}
-              value={currentForm.values.model}
-              onChange={handleModelChange}
-            >
-              {models?.map((element) => (
-                <MenuItem value={element.codigo} key={element.codigo}>
-                  {element.nome}
-                </MenuItem>
-              ))}
-            </Select>
-            <StyledErrorMessage>{currentForm.errors.model}</StyledErrorMessage>
-          </FormControl>
+          <CustomSelect
+            name='brand'
+            label='Marca'
+            required
+            value={currentForm.values.brand}
+            onChange={handleBrandChange}
+            errorMessage={currentForm.errors.brand}
+            options={brands?.map((element) => { return { key: element.codigo, value: element.nome } }) ?? []}
+          />
+          <CustomSelect
+            name='model'
+            label='Modelo'
+            required
+            disabled={isLoading || !currentForm.values.brand}
+            value={currentForm.values.model}
+            onChange={handleModelChange}
+            errorMessage={currentForm.errors.model}
+            options={models?.map((element) => { return { key: element.codigo, value: element.nome } }) ?? []}
+          />
           {!currentForm.values.model ? (
             <></>
           ) : (
-            <FormControl fullWidth sx={{ marginBottom: 3 }}>
-              <InputLabel id="years-select">Ano</InputLabel>
-              <Select
-                labelId="years-select"
-                id="year"
-                name="year"
-                label="Ano"
-                margin="none"
-                required
-                fullWidth
-                disabled={isLoading || !currentForm.values.model}
-                value={currentForm.values.year}
-                onChange={currentForm.handleChange}
-              >
-                {years?.map((element) => (
-                  <MenuItem value={element.codigo} key={element.codigo}>
-                    {element.nome}
-                  </MenuItem>
-                ))}
-              </Select>
-              <StyledErrorMessage>{currentForm.errors.year}</StyledErrorMessage>
-            </FormControl>
+            <CustomSelect
+              name='year'
+              label='Ano'
+              required
+              disabled={isLoading || !currentForm.values.model}
+              value={currentForm.values.year}
+              onChange={currentForm.handleChange}
+              errorMessage={currentForm.errors.year}
+              options={years?.map((element) => { return { key: element.codigo, value: element.nome } }) ?? []}
+            />
           )}
           <Box
             sx={{

@@ -10,7 +10,7 @@ interface UseFormProps {
   validate: (values: { [key: string]: any }) => {}
 }
 
-interface ChangeEvents {
+export interface ChangeEvents {
   target: {
     name: string
     value: any

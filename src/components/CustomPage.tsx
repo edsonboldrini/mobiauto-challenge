@@ -1,12 +1,12 @@
 import { styled } from '@mui/material/styles'
 
-interface StyledContainerProps {
+interface CustomPageProps {
   children: React.ReactNode
   backgroundColor: string
 }
 
-export default function StyledContainer({ children, backgroundColor }: StyledContainerProps) {
-  const StyledContainerDiv = styled('div')(({ theme }) => ({
+export default function CustomPage({ children, backgroundColor }: CustomPageProps) {
+  const CustomPageDiv = styled('div')(({ theme }) => ({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -19,8 +19,8 @@ export default function StyledContainer({ children, backgroundColor }: StyledCon
   }))
 
   return (
-    <StyledContainerDiv>
+    <CustomPageDiv>
       {children}
-    </StyledContainerDiv>
+    </CustomPageDiv>
   )
 }
