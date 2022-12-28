@@ -16,4 +16,19 @@ Frontend Challenge from Mobiauto. Challenge available at [link](https://github.c
 - Services abstraction
 - Custom Types
 
-### How to run
+### First steps
+```
+git clone git@github.com:edsonboldrini/mobiauto-challenge.git
+cd mobiauto-challenge
+npm i
+```
+
+if you want to run tests
+```
+npm test 
+```
+if you want to run project
+```
+npm run dev
+```
+
