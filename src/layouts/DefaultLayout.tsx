@@ -18,7 +18,7 @@ export default function DefaultLayout({ children, title = 'Mobiauto Challenge', 
         <title>{title}</title>
         <meta property="og:url" content={router.asPath} />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.mobiauto.com.br/images/logo.png" />
+        <meta property="og:image" content="/logo.png" />
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
       </Head>
