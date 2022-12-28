@@ -46,7 +46,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
 }
 
 export async function getServerSideProps(context: any) {
-  const { brand, model, year } = context.query
+  const { brand, model, year } = context.params
 
   if (!brand || !model || !year) {
     return {

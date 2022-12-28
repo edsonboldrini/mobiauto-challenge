@@ -32,11 +32,6 @@ const StyledForm = styled('form')(({ theme }) => ({
   }
 }))
 
-const StyledErrorMessage = styled('p')(({ theme }) => ({
-  margin: '0px',
-  color: 'red'
-}))
-
 export default function Busca({ brands }: BuscaProps) {
   const router = useRouter()
   const [models, setModels] = useState<IModel[] | null>(null)
