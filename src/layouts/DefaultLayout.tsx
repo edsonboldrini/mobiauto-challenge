@@ -16,7 +16,7 @@ export default function DefaultLayout({ children, title = 'Mobiauto Challenge', 
     <>
       <Head>
         <title>{title}</title>
-        <meta property="og:url" content={router.asPath} />
+        <meta property="og:url" content={router?.asPath ?? 'https://mobiauto-challenge.vercel.app'} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/logo.png" />
         <meta property="og:title" content={metaTitle} />
