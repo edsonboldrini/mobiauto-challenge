@@ -23,11 +23,11 @@ cd mobiauto-challenge
 npm i
 ```
 
-if you want to run tests
+If you want to run tests:
 ```
 npm test 
 ```
-if you want to run project
+If you want to run the project
 ```
 npm run dev
 ```
