@@ -66,6 +66,8 @@ export default function Busca({ brands }: BuscaProps) {
 
   const handleBrandChange = async (event: ChangeEvents) => {
     currentForm.handleChange(event)
+    currentForm.updateKeyValue('model', '')
+    currentForm.updateKeyValue('year', '')
 
     if (event.target.value) {
       setIsLoading(true)
@@ -80,6 +82,7 @@ export default function Busca({ brands }: BuscaProps) {
 
   const handleModelChange = async (event: ChangeEvents) => {
     currentForm.handleChange(event)
+    currentForm.updateKeyValue('year', '')
 
     if (event.target.value) {
       setIsLoading(true)
