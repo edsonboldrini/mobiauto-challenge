@@ -16,8 +16,13 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
   const router = useRouter()
 
   return (
-    <DefaultLayout title={vehicleData?.Modelo} metaTitle={`${vehicleData?.Modelo} - ${vehicleData?.Valor}`} metaDescription={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`} >
-      <StyledContainer backgroundColor={theme.palette.success.light}>
+    <DefaultLayout
+      title={vehicleData?.Modelo}
+      metaTitle={`${vehicleData?.Modelo} - ${vehicleData?.Valor}`}
+      metaDescription={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`}
+      backgroundColor={theme.palette.success.light}
+    >
+      <StyledContainer>
         <Button
           variant="contained"
           sx={{ backgroundColor: theme.palette.grey[200], color: 'white', mb: 2 }}

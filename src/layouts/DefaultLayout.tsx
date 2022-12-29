@@ -7,9 +7,16 @@ interface DefaultLayoutProps {
   title?: string
   metaTitle?: string
   metaDescription?: string
+  backgroundColor: string
 }
 
-export default function DefaultLayout({ children, title = 'Mobiauto Challenge', metaTitle = 'Mobiauto Challenge', metaDescription = 'Consulte agora carros e seus preços na tabela Fipe' }: DefaultLayoutProps) {
+export default function DefaultLayout({
+  children,
+  title = 'Mobiauto Challenge',
+  metaTitle = 'Mobiauto Challenge',
+  metaDescription = 'Consulte agora carros e seus preços na tabela Fipe',
+  backgroundColor
+}: DefaultLayoutProps) {
   const router = useRouter()
 
   return (
@@ -27,7 +34,8 @@ export default function DefaultLayout({ children, title = 'Mobiauto Challenge', 
           height: '100vh',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          backgroundColor: backgroundColor
         }}
       >
         {children}

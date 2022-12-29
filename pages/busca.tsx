@@ -95,8 +95,11 @@ export default function Busca({ brands }: BuscaProps) {
   }
 
   return (
-    <DefaultLayout metaTitle="Mobiauto Challenge - Busca">
-      <StyledContainer backgroundColor={red[50]}>
+    <DefaultLayout
+      metaTitle="Mobiauto Challenge - Busca"
+      backgroundColor={red[50]}
+    >
+      <StyledContainer>
         <Typography component="h1" variant="h4" sx={{ mb: 2, textAlign: 'center', fontWeight: 'bold' }}>
           Tabela Fipe
         </Typography>
