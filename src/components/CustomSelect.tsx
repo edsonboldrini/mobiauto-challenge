@@ -26,7 +26,7 @@ const StyledErrorMessage = styled('p')(({ theme }) => ({
 export default function CustomSelect({ name, label = name, required = false, fullWidth = true, disabled = false, value, onChange, options, errorMessage }: CustomSelectProps) {
   return (
     <FormControl fullWidth sx={{ marginBottom: 3 }}>
-      <InputLabel id={`${name}-select`}>Marca</InputLabel>
+      <InputLabel id={`${name}-select`}>{label}</InputLabel>
       <Select
         labelId={`${name}-select`}
         id={name}

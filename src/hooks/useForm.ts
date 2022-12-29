@@ -14,6 +14,7 @@ export interface ChangeEvents {
   target: {
     name: string
     value: any
+    checked?: boolean
   }
 }
 
@@ -21,8 +22,12 @@ function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
   const [values, setValues] = useState<{ [key: string]: any }>(initialValues)
   const [errors, setErrors] = useState<{ [key: string]: any }>({})
 
+  const updateKeyValue = (key: string, value: any) => {
+    setValues((values) => { return { ...values, [key]: value } })
+  }
+
   function handleChange(event: ChangeEvents) {
-    setValues({ ...values, [event.target.name]: event.target.value })
+    setValues((values) => { return { ...values, [event.target.name]: event.target.checked ? event.target.checked : event.target.value } })
   }
 
   function clearForm() {
@@ -45,6 +50,7 @@ function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
 
   return {
     values,
+    updateKeyValue,
     handleChange,
     clearForm,
     handleSubmit,
