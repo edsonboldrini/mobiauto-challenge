@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import theme, { roboto } from '../src/config/theme';
+import theme, { roboto } from '../src/configs/theme';
 
 export default class _Document extends Document {
   render() {
