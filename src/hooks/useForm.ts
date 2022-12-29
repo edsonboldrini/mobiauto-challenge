@@ -27,7 +27,7 @@ function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
   }
 
   function handleChange(event: ChangeEvents) {
-    setValues((values) => { return { ...values, [event.target.name]: event.target.checked ? event.target.checked : event.target.value } })
+    setValues((values) => { return { ...values, [event.target.name]: event.target.checked != undefined ? event.target.checked : event.target.value } })
   }
 
   function clearForm() {
