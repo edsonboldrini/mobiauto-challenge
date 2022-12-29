@@ -37,7 +37,7 @@ function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
 
   function clearForm() {
     setValues(initialValues)
-    setErrors({})
+    clearErrors()
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
