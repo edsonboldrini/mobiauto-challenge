@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { red } from '@mui/material/colors'
 import { CircularProgress } from '@mui/material'
 import { styled } from '@mui/material/styles'
@@ -13,6 +13,7 @@ import theme from '../src/configs/theme'
 import DefaultLayout from '../src/layouts/DefaultLayout'
 import StyledContainer from '../src/components/CustomPage'
 import CustomSelect from '../src/components/CustomSelect'
+import { SearchContext } from '../src/contexts/SearchProvider'
 
 interface BuscaProps {
   brands: IBrand[] | null
@@ -29,15 +30,16 @@ const StyledForm = styled('form')(({ theme }) => ({
 }))
 
 export default function Busca({ brands }: BuscaProps) {
+  const searchContext = useContext(SearchContext)
   const router = useRouter()
   const [models, setModels] = useState<IModel[] | null>(null)
   const [years, setYears] = useState<IYear[] | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const currentForm = useForm({
     initialValues: {
-      brand: '',
-      model: '',
-      year: ''
+      brand: searchContext.values.brand,
+      model: searchContext.values.model,
+      year: searchContext.values.year
     },
     validate: (values) => {
       const errors: { [key: string]: any } = {}
@@ -66,14 +68,18 @@ export default function Busca({ brands }: BuscaProps) {
     currentForm.updateKeyValue('year', '')
 
     if (event.target.value) {
-      setIsLoading(true)
-      const newModels: IModel[] | null = await FipeService.getAllModelsByBrand(event.target.value)
-
-      if (newModels?.length) {
-        setModels(newModels)
-      }
-      setIsLoading(false)
+      await updateModelsByBrand(event.target.value.toString())
     }
+  }
+
+  async function updateModelsByBrand(brand: string) {
+    setIsLoading(true)
+    const newModels: IModel[] | null = await FipeService.getAllModelsByBrand(brand)
+
+    if (newModels?.length) {
+      setModels(newModels)
+    }
+    setIsLoading(false)
   }
 
   const handleModelChange = async (event: ChangeEvents) => {
@@ -81,18 +87,28 @@ export default function Busca({ brands }: BuscaProps) {
     currentForm.updateKeyValue('year', '')
 
     if (event.target.value) {
-      setIsLoading(true)
-      const newYears: IModel[] | null = await FipeService.getAllYearsByBrandAndModel(
-        currentForm.values.brand,
-        event.target.value
-      )
-
-      if (newYears?.length) {
-        setYears(newYears)
-      }
-      setIsLoading(false)
+      await updateYearsByBrandAndModel(currentForm.values.brand, event.target.value.toString())
     }
   }
+
+  async function updateYearsByBrandAndModel(brand: string, model: string) {
+    setIsLoading(true)
+    const newYears: IModel[] | null = await FipeService.getAllYearsByBrandAndModel(brand, model)
+
+    if (newYears?.length) {
+      setYears(newYears)
+    }
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    if (searchContext.values.brand) {
+      updateModelsByBrand(searchContext.values.brand)
+    }
+    if (searchContext.values.brand && searchContext.values.model) {
+      updateYearsByBrandAndModel(searchContext.values.brand, searchContext.values.model)
+    }
+  }, [])
 
   return (
     <DefaultLayout
@@ -121,7 +137,7 @@ export default function Busca({ brands }: BuscaProps) {
             label='Modelo'
             required
             disabled={isLoading || !currentForm.values.brand}
-            value={currentForm.values.model}
+            value={models?.length ? currentForm.values.model : ''}
             onChange={handleModelChange}
             errorMessage={currentForm.errors.model}
             options={models?.map((element) => { return { key: element.codigo, value: element.nome } }) ?? []}
@@ -134,7 +150,7 @@ export default function Busca({ brands }: BuscaProps) {
               label='Ano'
               required
               disabled={isLoading || !currentForm.values.model}
-              value={currentForm.values.year}
+              value={years?.length ? currentForm.values.year : ''}
               onChange={currentForm.handleChange}
               errorMessage={currentForm.errors.year}
               options={years?.map((element) => { return { key: element.codigo, value: element.nome } }) ?? []}
