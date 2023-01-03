@@ -58,10 +58,17 @@ export function ThemeSwitch() {
       control={<MaterialUISwitch sx={{ m: 1 }} />}
       label="Modo escuro"
       labelPlacement="start"
-      sx={{ color: theme.palette.text.secondary }}
       checked={isDarkMode}
       onChange={(event) => {
         toggleMode()
+      }}
+      sx={{
+        color: theme.palette.text.secondary,
+        '& .MuiSwitch-root': {
+          margin: '0px',
+        },
+        ml: 0,
+        mb: 2
       }}
     />
   )
