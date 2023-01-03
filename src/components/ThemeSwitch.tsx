@@ -1,99 +1,68 @@
+import { styled, useTheme, FormControlLabel, Switch, } from "@mui/material";
 import { useContext } from "react"
-import styled from "styled-components"
 import { ColorModeContext } from "../contexts/ColorModeProvider";
 
-export const themes = {
-  'light': {
-    backgroundBase: "#F9F9F9",
-    backgroundLevel1: "#FFFFFF",
-    backgroundLevel2: "#F0F0F0",
-    borderBase: "#E5E5E5",
-    textColorBase: "#222222"
+const MaterialUISwitch = styled(Switch)(({ theme }) => ({
+  width: 62,
+  height: 34,
+  padding: 7,
+  '& .MuiSwitch-switchBase': {
+    margin: 1,
+    padding: 0,
+    transform: 'translateX(6px)',
+    '&.Mui-checked': {
+      color: '#fff',
+      transform: 'translateX(22px)',
+      '& .MuiSwitch-thumb:before': {
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+          '#fff',
+        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
+      },
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+      },
+    },
   },
-  'dark': {
-    backgroundBase: "#181818",
-    backgroundLevel1: "#202020",
-    backgroundLevel2: "#313131",
-    borderBase: "#383838",
-    textColorBase: "#FFFFFF"
-  }
-}
+  '& .MuiSwitch-thumb': {
+    backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+    width: 32,
+    height: 32,
+    '&:before': {
+      content: "''",
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      left: 0,
+      top: 0,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+        '#fff',
+      )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
+    },
+  },
+  '& .MuiSwitch-track': {
+    opacity: 1,
+    backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+    borderRadius: 20 / 2,
+  },
+}));
 
-const StyledSwitch = styled.div`
-  /* The switch - the box around the slider */
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 48px;
-    height: 24px;
-  }
-
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-
-  input:checked + .slider {
-    background-color: ${({ theme }) => theme.backgroundLevel2};
-  }
-
-  input:focus + .slider {
-    box-shadow: 0 0 1px ${({ theme }) => theme.backgroundLevel2};;
-  }
-
-  input:checked + .slider:before {
-    -webkit-transform: translateX(24px);
-    -ms-transform: translateX(24px);
-    transform: translateX(24px);
-  }
-
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-
-  .slider.round:before {
-    border-radius: 50%;
-  }
-`
 export function ThemeSwitch() {
+  const theme = useTheme()
   const colorModeContext = useContext(ColorModeContext)
 
   return (
-    <StyledSwitch>
-      <label className="switch">
-        <input type='checkbox' checked={colorModeContext.mode === 'dark'} onChange={(event) => {
-          colorModeContext.toggleMode()
-        }} />
-        <span className="slider round"></span>
-      </label>
-    </StyledSwitch>
+    <FormControlLabel
+      control={<MaterialUISwitch sx={{ m: 1 }} />}
+      label="Modo escuro"
+      labelPlacement="start"
+      sx={{ color: theme.palette.text.secondary }}
+      checked={colorModeContext.isDarkMode}
+      onChange={(event) => {
+        colorModeContext.toggleMode()
+      }}
+    />
   )
 }

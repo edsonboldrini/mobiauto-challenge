@@ -12,8 +12,7 @@ import { ChangeEvents, useForm } from '../src/hooks/useForm'
 import DefaultLayout from '../src/layouts/DefaultLayout'
 import StyledContainer from '../src/components/CustomPage'
 import CustomSelect from '../src/components/CustomSelect'
-import { themes, ThemeSwitch } from '../src/components/ThemeSwitch'
-import { ColorModeContext } from '../src/contexts/ColorModeProvider'
+import { ThemeSwitch } from '../src/components/ThemeSwitch'
 
 interface BuscaProps {
   brands: IBrand[] | null
@@ -32,7 +31,6 @@ const StyledForm = styled('form')(({ theme }) => ({
 export default function Busca({ brands }: BuscaProps) {
   const router = useRouter()
   const theme = useTheme()
-  // const { isLightMode } = useContext(ColorModeContext)
   const [models, setModels] = useState<IModel[] | null>(null)
   const [years, setYears] = useState<IYear[] | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -168,7 +166,7 @@ export default function Busca({ brands }: BuscaProps) {
                   Consultar preço
                 </Button>
             }
-            <Typography sx={{ textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge'>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
+            <Typography sx={{ color: theme.palette.text.secondary, textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge'>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
           </Box>
         </StyledForm>
       </StyledContainer>

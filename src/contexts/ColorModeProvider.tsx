@@ -5,14 +5,14 @@ interface SearchProviderContextType {
   mode: PaletteMode
   setMode: Dispatch<SetStateAction<PaletteMode>>
   toggleMode: () => void
-  isLightMode: boolean
+  isDarkMode: boolean
 }
 
 export const ColorModeContext = createContext({
   mode: 'light',
   setMode: () => { alert('Missing config setMode()') },
   toggleMode: () => { alert('Missing config toggleMode()') },
-  isLightMode: true
+  isDarkMode: false
 } as SearchProviderContextType)
 
 interface ColorModeProviderProps {
@@ -23,14 +23,14 @@ interface ColorModeProviderProps {
 export default function ColorModeProvider(props: ColorModeProviderProps) {
   const [mode, setMode] = useState<PaletteMode>(props.initialMode)
 
-  const isLightMode = useMemo(() => { return mode === 'light' }, [mode])
+  const isDarkMode = useMemo(() => { return mode === 'dark' }, [mode])
 
   function toggleMode() {
-    setMode((previousMode) => previousMode === 'light' ? 'dark' : 'light')
+    setMode((previousMode) => previousMode === 'dark' ? 'light' : 'dark')
   }
 
   return (
-    <ColorModeContext.Provider value={{ mode, setMode, toggleMode, isLightMode }}>
+    <ColorModeContext.Provider value={{ mode, setMode, toggleMode, isDarkMode }}>
       {props.children}
     </ColorModeContext.Provider >
   )
