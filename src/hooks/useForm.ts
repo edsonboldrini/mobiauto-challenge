@@ -23,13 +23,13 @@ function useForm({ initialValues, onSubmit, validate }: UseFormProps) {
   const [errors, setErrors] = useState<{ [key: string]: any }>({})
 
   const updateKeyValue = (key: string, value: any) => {
-    setValues((values) => { return { ...values, [key]: value } })
+    setValues((previousValues) => { return { ...previousValues, [key]: value } })
   }
 
   function handleChange(event: ChangeEvents) {
-    setValues((values) => {
+    setValues((previousValues) => {
       return {
-        ...values,
+        ...previousValues,
         [event.target.name]: event.target.checked != undefined ? event.target.checked : event.target.value
       }
     })
