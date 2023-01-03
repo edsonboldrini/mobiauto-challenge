@@ -2,12 +2,12 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
-import { ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import theme from '../src/configs/theme';
+import { getDesignTokens } from '../src/configs/theme';
 import createEmotionCache from '../src/configs/createEmotionCache';
-import SearchProvider from '../src/contexts/SearchProvider';
+import ColorModeProvider, { ColorModeContext } from '../src/contexts/ColorModeProvider';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -17,18 +17,17 @@ interface MyAppProps extends AppProps {
 
 function ProviderWrapper(props: any) {
   return (
-    <SearchProvider initialValues={{
-      brand: '',
-      model: '',
-      year: ''
-    }}>
+    <ColorModeProvider initialMode="light">
       {props.children}
-    </SearchProvider>
+    </ColorModeProvider>
   )
 }
 
 function Root(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  const { mode } = React.useContext(ColorModeContext)
+  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   return (
     <CacheProvider value={emotionCache}>

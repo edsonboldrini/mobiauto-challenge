@@ -1,19 +1,19 @@
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useContext, useEffect, useState } from 'react'
-import { red } from '@mui/material/colors'
-import { CircularProgress } from '@mui/material'
+import { useState, useContext } from 'react'
+import { grey, red } from '@mui/material/colors'
+import { CircularProgress, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { IBrand, IModel, IYear } from '../src/types'
 import { useRouter } from 'next/router'
 import { FipeService } from '../src/services/FipeService'
 import { ChangeEvents, useForm } from '../src/hooks/useForm'
-import theme from '../src/configs/theme'
 import DefaultLayout from '../src/layouts/DefaultLayout'
 import StyledContainer from '../src/components/CustomPage'
 import CustomSelect from '../src/components/CustomSelect'
-import { SearchContext } from '../src/contexts/SearchProvider'
+import { themes, ThemeSwitch } from '../src/components/ThemeSwitch'
+import { ColorModeContext } from '../src/contexts/ColorModeProvider'
 
 interface BuscaProps {
   brands: IBrand[] | null
@@ -22,7 +22,7 @@ interface BuscaProps {
 const StyledForm = styled('form')(({ theme }) => ({
   width: '50%',
   padding: 48,
-  backgroundColor: 'white',
+  backgroundColor: theme.palette.mode === 'light' ? 'white' : 'grey',
   [theme.breakpoints.down('md')]: {
     width: '100%',
     padding: 24
@@ -30,16 +30,17 @@ const StyledForm = styled('form')(({ theme }) => ({
 }))
 
 export default function Busca({ brands }: BuscaProps) {
-  const searchContext = useContext(SearchContext)
   const router = useRouter()
+  const theme = useTheme()
+  // const { isLightMode } = useContext(ColorModeContext)
   const [models, setModels] = useState<IModel[] | null>(null)
   const [years, setYears] = useState<IYear[] | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const currentForm = useForm({
     initialValues: {
-      brand: searchContext.values.brand,
-      model: searchContext.values.model,
-      year: searchContext.values.year
+      brand: '',
+      model: '',
+      year: ''
     },
     validate: (values) => {
       const errors: { [key: string]: any } = {}
@@ -101,21 +102,13 @@ export default function Busca({ brands }: BuscaProps) {
     setIsLoading(false)
   }
 
-  useEffect(() => {
-    if (searchContext.values.brand) {
-      updateModelsByBrand(searchContext.values.brand)
-    }
-    if (searchContext.values.brand && searchContext.values.model) {
-      updateYearsByBrandAndModel(searchContext.values.brand, searchContext.values.model)
-    }
-  }, [])
-
   return (
     <DefaultLayout
       metaTitle="Mobiauto Challenge - Busca"
-      backgroundColor={red[50]}
+      backgroundColor={theme.palette.background.default}
     >
       <StyledContainer>
+        <ThemeSwitch />
         <Typography component="h1" variant="h4" sx={{ mb: 2, textAlign: 'center', fontWeight: 'bold' }}>
           Tabela Fipe
         </Typography>
@@ -175,7 +168,7 @@ export default function Busca({ brands }: BuscaProps) {
                   Consultar preço
                 </Button>
             }
-            <Typography sx={{ color: theme.palette.grey[200], textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ color: theme.palette.grey[200] }}>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
+            <Typography sx={{ textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge'>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
           </Box>
         </StyledForm>
       </StyledContainer>

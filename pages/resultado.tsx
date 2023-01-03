@@ -1,12 +1,12 @@
 import Typography from '@mui/material/Typography'
 import { IVehicleData } from '../src/types'
 import { FipeService } from '../src/services/FipeService'
-import theme from '../src/configs/theme'
 import DefaultLayout from '../src/layouts/DefaultLayout'
 import CustomPill from '../src/components/CustomPill'
 import StyledContainer from '../src/components/CustomPage'
 import { useRouter } from 'next/router'
-import { Button } from '@mui/material'
+import { Button, useTheme } from '@mui/material'
+import { ThemeSwitch } from '../src/components/ThemeSwitch'
 
 interface ResultadoProps {
   vehicleData: IVehicleData | null
@@ -14,18 +14,20 @@ interface ResultadoProps {
 
 export default function Resultado({ vehicleData }: ResultadoProps) {
   const router = useRouter()
+  const theme = useTheme();
 
   return (
     <DefaultLayout
       title={vehicleData?.Modelo}
       metaTitle={`${vehicleData?.Modelo} - ${vehicleData?.Valor}`}
       metaDescription={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`}
-      backgroundColor={theme.palette.success.light}
+      backgroundColor={theme.palette.background.paper}
     >
       <StyledContainer>
+        <ThemeSwitch />
         <Button
           variant="contained"
-          sx={{ backgroundColor: theme.palette.grey[200], color: 'white', mb: 2 }}
+          sx={{ color: 'white', mb: 2 }}
           onClick={() => router.back()}
         >
           Voltar para busca
@@ -33,7 +35,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
         <Typography
           component="h1"
           variant="h4"
-          sx={{ mb: 2, fontWeight: 'bold', color: theme.palette.grey[500], textAlign: 'center' }}
+          sx={{ mb: 2, fontWeight: 'bold', textAlign: 'center' }}
         >
           Tabela Fipe Preço: {vehicleData?.Marca} {vehicleData?.Modelo} {vehicleData?.AnoModelo} {vehicleData?.Combustivel}
         </Typography>
@@ -42,8 +44,8 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
           textColor='white'
           content={`${vehicleData?.Valor}`}
         />
-        <Typography sx={{ color: theme.palette.grey[200] }}>Este é o preço de compra do veículo</Typography>
-        <Typography sx={{ color: theme.palette.grey[200], textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ color: theme.palette.grey[200] }}>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
+        <Typography variant="body1">Este é o preço de compra do veículo</Typography>
+        <Typography variant="body1" sx={{ textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge'>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
       </StyledContainer>
     </DefaultLayout>
 
@@ -51,7 +53,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
 }
 
 export async function getServerSideProps(context: any) {
-  const { brand, model, year } = context.query
+  const { brand, model, year } = context.params
 
   if (!brand || !model || !year) {
     return {
