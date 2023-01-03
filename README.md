@@ -15,6 +15,7 @@ Frontend Challenge from Mobiauto. Challenge available at [link](https://github.c
 - MaterialUI config
 - Services abstraction
 - Custom Types
+- Context API
 
 ### First steps
 ```
