@@ -51,7 +51,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 export function ThemeSwitch() {
   const theme = useTheme()
-  const colorModeContext = useContext(ColorModeContext)
+  const { isDarkMode, toggleMode } = useContext(ColorModeContext)
 
   return (
     <FormControlLabel
@@ -59,9 +59,9 @@ export function ThemeSwitch() {
       label="Modo escuro"
       labelPlacement="start"
       sx={{ color: theme.palette.text.secondary }}
-      checked={colorModeContext.isDarkMode}
+      checked={isDarkMode}
       onChange={(event) => {
-        colorModeContext.toggleMode()
+        toggleMode()
       }}
     />
   )

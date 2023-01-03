@@ -3,6 +3,21 @@ import { createTheme } from '@mui/material/styles';
 import { amber, deepOrange, grey, red } from '@mui/material/colors';
 import { PaletteMode } from '@mui/material';
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    customBackground: {
+      red: string;
+      green: string;
+    };
+  }
+  interface PaletteOptions {
+    customBackground: {
+      red: string;
+      green: string;
+    };
+  }
+}
+
 export const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
@@ -17,12 +32,9 @@ export const getDesignTokens = (mode: PaletteMode) => ({
       ? {
         // palette values for light mode
         primary: {
-          main: '#6551bf'
-        },
-        divider: '#2a29a5',
-        background: {
-          default: red[50],
-          paper: '#dff3f2',
+          main: '#6551bf',
+          light: '#c9c1e7',
+          dark: '#2a29a5'
         },
         text: {
           primary: '#454357',
@@ -30,47 +42,34 @@ export const getDesignTokens = (mode: PaletteMode) => ({
         },
         success: {
           main: '#43a48d',
-        }
+        },
+        customBackground: {
+          red: red[50],
+          green: '#dff3f2',
+        },
       }
       : {
         // palette values for dark mode
         primary: {
-          main: '#6551bf'
+          main: '#6551bf',
+          light: '#c9c1e7',
+          dark: '#2a29a5'
         },
-        divider: '#2a29a5',
         background: {
           default: grey[900],
           paper: grey[900],
         },
         text: {
           primary: '#fff',
-          secondary: grey[500],
+          secondary: '#eee',
         },
         success: {
           main: '#43a48d',
-        }
+        },
+        customBackground: {
+          red: '#454357',
+          green: '#454357',
+        },
       }),
   },
 });
-
-// Create a theme instance.
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#6551bf',
-//     },
-//     success: {
-//       main: '#43a48d',
-//       light: '#dff3f2'
-//     },
-//     grey: {
-//       '500': '#454357',
-//       '200': '#87859a'
-//     }
-//   },
-//   typography: {
-//     fontFamily: roboto.style.fontFamily,
-//   },
-// });
-
-// export default theme;

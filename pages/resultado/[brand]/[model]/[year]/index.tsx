@@ -1,12 +1,12 @@
 import Typography from '@mui/material/Typography'
+import { useRouter } from 'next/router'
+import { Button, useTheme } from '@mui/material'
 import { IVehicleData } from '../../../../../src/types'
 import { FipeService } from '../../../../../src/services/FipeService'
 import DefaultLayout from '../../../../../src/layouts/DefaultLayout'
 import CustomPill from '../../../../../src/components/CustomPill'
 import StyledContainer from '../../../../../src/components/CustomPage'
 import { ThemeSwitch } from '../../../../../src/components/ThemeSwitch'
-import { useRouter } from 'next/router'
-import { Button, useTheme } from '@mui/material'
 
 interface ResultadoProps {
   vehicleData: IVehicleData | null
@@ -21,7 +21,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
       title={vehicleData?.Modelo}
       metaTitle={`${vehicleData?.Modelo} - ${vehicleData?.Valor}`}
       metaDescription={`${vehicleData?.Marca} ${vehicleData?.Modelo} ${vehicleData?.AnoModelo} ${vehicleData?.Combustivel}`}
-      backgroundColor={theme.palette.background.paper}
+      backgroundColor={theme.palette.customBackground.green}
     >
       <StyledContainer>
         <ThemeSwitch />
@@ -45,7 +45,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
           content={`${vehicleData?.Valor}`}
         />
         <Typography variant="body1" sx={{ color: theme.palette.text.secondary }} >Este é o preço de compra do veículo</Typography>
-        <Typography variant="body1" sx={{ color: theme.palette.text.secondary, textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge'>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
+        <Typography variant="body1" sx={{ color: theme.palette.text.secondary, textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ color: theme.palette.text.secondary }}>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
       </StyledContainer>
     </DefaultLayout>
 

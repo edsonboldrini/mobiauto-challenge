@@ -1,12 +1,11 @@
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useState, useContext } from 'react'
-import { grey, red } from '@mui/material/colors'
+import { useState } from 'react'
 import { CircularProgress, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { IBrand, IModel, IYear } from '../src/types'
 import { useRouter } from 'next/router'
+import { IBrand, IModel, IYear } from '../src/types'
 import { FipeService } from '../src/services/FipeService'
 import { ChangeEvents, useForm } from '../src/hooks/useForm'
 import DefaultLayout from '../src/layouts/DefaultLayout'
@@ -21,7 +20,7 @@ interface BuscaProps {
 const StyledForm = styled('form')(({ theme }) => ({
   width: '50%',
   padding: 48,
-  backgroundColor: theme.palette.mode === 'light' ? 'white' : 'grey',
+  backgroundColor: theme.palette.mode === 'light' ? 'white' : theme.palette.background.default,
   [theme.breakpoints.down('md')]: {
     width: '100%',
     padding: 24
@@ -103,7 +102,7 @@ export default function Busca({ brands }: BuscaProps) {
   return (
     <DefaultLayout
       metaTitle="Mobiauto Challenge - Busca"
-      backgroundColor={theme.palette.background.default}
+      backgroundColor={theme.palette.customBackground.red}
     >
       <StyledContainer>
         <ThemeSwitch />
@@ -155,18 +154,24 @@ export default function Busca({ brands }: BuscaProps) {
               justifyContent: 'center'
             }}
           >
-            {
-              isLoading ?
-                <CircularProgress /> :
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={isLoading || !currentForm.values.brand || !currentForm.values.model || !currentForm.values.year}
-                >
-                  Consultar preço
-                </Button>
-            }
-            <Typography sx={{ color: theme.palette.text.secondary, textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge'>https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
+            <Box
+              sx={{
+                height: '40px'
+              }}
+            >
+              {
+                isLoading ?
+                  <CircularProgress /> :
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={isLoading || !currentForm.values.brand || !currentForm.values.model || !currentForm.values.year}
+                  >
+                    Consultar preço
+                  </Button>
+              }
+            </Box>
+            <Typography variant="body1" sx={{ color: theme.palette.text.secondary, textAlign: 'center', mt: 2 }}>Código fonte disponível em: <a href='https://github.com/edsonboldrini/mobiauto-challenge' style={{ color: theme.palette.text.secondary }}> https://github.com/edsonboldrini/mobiauto-challenge</a></Typography>
           </Box>
         </StyledForm>
       </StyledContainer>
