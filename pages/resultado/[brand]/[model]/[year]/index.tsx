@@ -7,13 +7,13 @@ import DefaultLayout from '../../../../../src/layouts/DefaultLayout'
 import CustomPill from '../../../../../src/components/CustomPill'
 import StyledContainer from '../../../../../src/components/CustomPage'
 import { ThemeSwitch } from '../../../../../src/components/ThemeSwitch'
+import { SearchRoute } from '../../../../../src/utils/routesPaths'
 
 interface ResultadoProps {
   vehicleData: IVehicleData | null
 }
 
 export default function Resultado({ vehicleData }: ResultadoProps) {
-  const router = useRouter()
   const theme = useTheme();
 
   return (
@@ -28,7 +28,7 @@ export default function Resultado({ vehicleData }: ResultadoProps) {
         <Button
           variant="contained"
           sx={{ color: 'white', mb: 2 }}
-          onClick={() => router.back()}
+          href={SearchRoute}
         >
           Voltar para busca
         </Button>

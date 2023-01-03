@@ -12,6 +12,7 @@ import DefaultLayout from '../src/layouts/DefaultLayout'
 import StyledContainer from '../src/components/CustomPage'
 import CustomSelect from '../src/components/CustomSelect'
 import { ThemeSwitch } from '../src/components/ThemeSwitch'
+import { ResultRoute } from '../src/utils/routesPaths'
 
 interface BuscaProps {
   brands: IBrand[] | null
@@ -56,7 +57,7 @@ export default function Busca({ brands }: BuscaProps) {
       setIsLoading(true)
       const { brand, model, year } = values
 
-      router.push(`/resultado/${brand}/${model}/${year}`)
+      router.push(`${ResultRoute}/${brand}/${model}/${year}`)
     }
   })
 
