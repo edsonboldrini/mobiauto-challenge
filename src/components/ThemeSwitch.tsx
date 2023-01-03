@@ -59,9 +59,7 @@ export function ThemeSwitch() {
       label="Modo escuro"
       labelPlacement="start"
       checked={isDarkMode}
-      onChange={(event) => {
-        toggleMode()
-      }}
+      onChange={toggleMode}
       sx={{
         color: theme.palette.text.secondary,
         '& .MuiSwitch-root': {
