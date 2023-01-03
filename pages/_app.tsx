@@ -33,6 +33,8 @@ function Root(props: MyAppProps) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        {/* PWA primary color */}
+        <meta name="theme-color" content={theme.palette.primary.main} />
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />

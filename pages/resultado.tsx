@@ -14,7 +14,7 @@ interface ResultadoProps {
 }
 
 export default function Resultado({ vehicleData }: ResultadoProps) {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <DefaultLayout
