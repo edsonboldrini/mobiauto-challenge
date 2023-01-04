@@ -44,7 +44,7 @@ function Root(props: MyAppProps) {
   )
 }
 
-function _App(props: any) {
+export function _App(props: MyAppProps) {
   return (
     <ProviderWrapper>
       <Root {...props} />
