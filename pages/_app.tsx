@@ -8,7 +8,6 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import { getDesignTokens } from '../src/configs/theme';
 import createEmotionCache from '../src/configs/createEmotionCache';
 import ColorModeProvider, { ColorModeContext } from '../src/contexts/ColorModeProvider';
-import { getColorModeCookie } from '../src/services/ColorModeService';
 
 const clientSideEmotionCache = createEmotionCache();
 
