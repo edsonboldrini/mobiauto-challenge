@@ -3,15 +3,15 @@ import { useState, createContext, Dispatch, SetStateAction, useMemo, useEffect }
 import { getColorModeCookie, setColorModeCookie } from "../services/ColorModeService"
 
 interface SearchProviderContextType {
-  mode: PaletteMode
-  setMode: Dispatch<SetStateAction<PaletteMode>>
+  colorMode: PaletteMode
+  setColorMode: Dispatch<SetStateAction<PaletteMode>>
   toggleMode: () => void
   isDarkMode: boolean
 }
 
 export const ColorModeContext = createContext({
-  mode: 'light',
-  setMode: () => { alert('Missing config setMode()') },
+  colorMode: 'light',
+  setColorMode: () => { alert('Missing config setMode()') },
   toggleMode: () => { alert('Missing config toggleMode()') },
   isDarkMode: false
 } as SearchProviderContextType)
@@ -22,13 +22,13 @@ interface ColorModeProviderProps {
 }
 
 export default function ColorModeProvider(props: ColorModeProviderProps) {
-  const [mode, setMode] = useState<PaletteMode>(props.initialMode)
+  const [colorMode, setColorMode] = useState<PaletteMode>(props.initialMode)
 
-  const isDarkMode = useMemo(() => { return mode === 'dark' }, [mode])
+  const isDarkMode = useMemo(() => { return colorMode === 'dark' }, [colorMode])
 
   function toggleMode() {
-    const newMode = mode === 'dark' ? 'light' : 'dark'
-    setMode(newMode)
+    const newMode = colorMode === 'dark' ? 'light' : 'dark'
+    setColorMode(newMode)
     setColorModeCookie(newMode)
   }
 
@@ -36,12 +36,12 @@ export default function ColorModeProvider(props: ColorModeProviderProps) {
     const newColorModeData = getColorModeCookie()
 
     if (newColorModeData) {
-      setMode(newColorModeData)
+      setColorMode(newColorModeData)
     }
   }, [])
 
   return (
-    <ColorModeContext.Provider value={{ mode, setMode, toggleMode, isDarkMode }}>
+    <ColorModeContext.Provider value={{ colorMode, setColorMode, toggleMode, isDarkMode }}>
       {props.children}
     </ColorModeContext.Provider >
   )

@@ -27,8 +27,8 @@ function ProviderWrapper(props: any) {
 function Root(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
-  const { mode } = React.useContext(ColorModeContext)
-  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const { colorMode } = React.useContext(ColorModeContext)
+  const theme = React.useMemo(() => createTheme(getDesignTokens(colorMode)), [colorMode]);
 
   return (
     <CacheProvider value={emotionCache}>
