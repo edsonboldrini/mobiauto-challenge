@@ -1,5 +1,6 @@
 import { PaletteMode } from "@mui/material"
-import { useState, createContext, Dispatch, SetStateAction, useMemo } from "react"
+import { useState, createContext, Dispatch, SetStateAction, useMemo, useEffect } from "react"
+import { getColorModeDataCookie, setColorModeDataCookie } from "../services/ColorModeService"
 
 interface SearchProviderContextType {
   mode: PaletteMode
@@ -17,17 +18,27 @@ export const ColorModeContext = createContext({
 
 interface ColorModeProviderProps {
   children: React.ReactNode
-  initialMode: PaletteMode
+  initialMode?: PaletteMode
 }
 
 export default function ColorModeProvider(props: ColorModeProviderProps) {
-  const [mode, setMode] = useState<PaletteMode>(props.initialMode)
+  const [mode, setMode] = useState<PaletteMode>(props.initialMode ?? 'light')
 
   const isDarkMode = useMemo(() => { return mode === 'dark' }, [mode])
 
   function toggleMode() {
-    setMode((previousMode) => previousMode === 'dark' ? 'light' : 'dark')
+    const newMode = mode === 'dark' ? 'light' : 'dark'
+    setMode(newMode)
+    setColorModeDataCookie(newMode)
   }
+
+  useEffect(() => {
+    const newColorModeData = getColorModeDataCookie()
+
+    if (newColorModeData) {
+      setMode(newColorModeData)
+    }
+  }, [])
 
   return (
     <ColorModeContext.Provider value={{ mode, setMode, toggleMode, isDarkMode }}>
