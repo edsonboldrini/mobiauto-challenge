@@ -17,10 +17,11 @@ type AppOwnProps = {
 };
 
 type AppOwnInitialProps = {
-  colorMode: string
+  children?: React.ReactNode
+  colorMode: 'light' | 'dark'
 };
 
-function ProviderWrapper(props: any) {
+function ProviderWrapper(props: AppOwnInitialProps) {
   return (
     <ColorModeProvider initialMode={props.colorMode}>
       {props.children}
@@ -28,7 +29,7 @@ function ProviderWrapper(props: any) {
   )
 }
 
-function Root(props: AppProps & AppOwnInitialProps & AppOwnProps) {
+function Root(props: AppProps & AppOwnProps) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props;
 
   const { colorMode } = React.useContext(ColorModeContext)
@@ -57,7 +58,7 @@ export function _App(props: AppProps & AppOwnInitialProps & AppOwnProps) {
   )
 }
 
-_App.getInitialProps = async (appContext: AppContext): Promise<AppOwnInitialProps & AppInitialProps> => {
+_App.getInitialProps = async (appContext: AppContext): Promise<AppInitialProps & AppOwnInitialProps> => {
   const initialProps = await App.getInitialProps(appContext);
 
   const colorModeCookie = getColorModeCookie(appContext.ctx);
