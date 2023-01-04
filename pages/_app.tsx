@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import Head from 'next/head';
-import { AppProps } from 'next/app';
+import { AppProps } from "next/app";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
@@ -44,10 +44,12 @@ function Root(props: MyAppProps) {
   )
 }
 
-export default function _App(props: any) {
+function _App(props: any) {
   return (
     <ProviderWrapper>
       <Root {...props} />
     </ProviderWrapper>
   )
 }
+
+export default _App
