@@ -9,6 +9,7 @@ import { getDesignTokens } from '../src/configs/theme';
 import createEmotionCache from '../src/configs/createEmotionCache';
 import ColorModeProvider, { ColorModeContext } from '../src/contexts/ColorModeProvider';
 import { getColorModeCookie } from '../src/services/ColorModeService';
+import { PaletteMode } from '@mui/material';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -18,7 +19,7 @@ type AppOwnProps = {
 
 type AppOwnInitialProps = {
   children?: React.ReactNode
-  colorMode: 'light' | 'dark'
+  colorMode: PaletteMode
 };
 
 function ProviderWrapper(props: AppOwnInitialProps) {
