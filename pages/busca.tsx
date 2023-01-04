@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { CircularProgress, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
-import { IBrand, IModel, IYear } from '../src/types'
+import { IBrand, IModel, IYear } from '../src/types/models'
 import { FipeService } from '../src/services/FipeService'
 import { ChangeEvents, useForm } from '../src/hooks/useForm'
 import DefaultLayout from '../src/layouts/DefaultLayout'
@@ -118,6 +118,7 @@ export default function Busca({ brands }: BuscaProps) {
             name='brand'
             label='Marca'
             required
+            disabled={isLoading}
             value={currentForm.values.brand}
             onChange={handleBrandChange}
             errorMessage={currentForm.errors.brand}

@@ -1,6 +1,5 @@
 import { Roboto } from '@next/font/google';
-import { createTheme } from '@mui/material/styles';
-import { amber, deepOrange, grey, red } from '@mui/material/colors';
+import { grey, red } from '@mui/material/colors';
 import { PaletteMode } from '@mui/material';
 
 declare module '@mui/material/styles' {

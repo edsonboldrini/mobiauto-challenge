@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/router'
 import { Button, useTheme } from '@mui/material'
-import { IVehicleData } from '../../../../../src/types'
+import { IVehicleData } from '../../../../../src/types/models'
 import { FipeService } from '../../../../../src/services/FipeService'
 import DefaultLayout from '../../../../../src/layouts/DefaultLayout'
 import CustomPill from '../../../../../src/components/CustomPill'
