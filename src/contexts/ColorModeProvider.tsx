@@ -32,15 +32,17 @@ export default function ColorModeProvider(props: ColorModeProviderProps) {
     setColorModeCookie(newMode)
   }
 
-  const currentColorModeCookie = getColorModeCookie()
+  useEffect(() => {
+    const currentColorModeCookie = getColorModeCookie()
 
-  if (currentColorModeCookie && currentColorModeCookie != props.initialMode) {
-    setColorMode(currentColorModeCookie!)
-  }
+    if (currentColorModeCookie && currentColorModeCookie != props.initialMode) {
+      setColorMode(currentColorModeCookie!)
+    }
 
-  if (!currentColorModeCookie) {
-    setColorModeCookie(props.initialMode)
-  }
+    if (!currentColorModeCookie) {
+      setColorModeCookie(props.initialMode)
+    }
+  }, [])
 
   return (
     <ColorModeContext.Provider value={{ colorMode, setColorMode, toggleMode, isDarkMode }}>
