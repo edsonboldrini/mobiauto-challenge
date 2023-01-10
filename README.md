@@ -16,6 +16,7 @@ Frontend Challenge from Mobiauto. Challenge available at [link](https://github.c
 - Services abstraction
 - Custom Types
 - Context API
+- Cookies cache
 
 ### First steps
 ```

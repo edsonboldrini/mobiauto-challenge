@@ -2,7 +2,7 @@ import { PaletteMode } from "@mui/material"
 import { useState, createContext, Dispatch, SetStateAction, useMemo, useEffect } from "react"
 import { getColorModeCookie, setColorModeCookie } from "../services/ColorModeService"
 
-interface SearchProviderContextType {
+interface ColorModeContextType {
   colorMode: PaletteMode
   setColorMode: Dispatch<SetStateAction<PaletteMode>>
   toggleMode: () => void
@@ -14,7 +14,7 @@ export const ColorModeContext = createContext({
   setColorMode: () => { alert('Missing config setMode()') },
   toggleMode: () => { alert('Missing config toggleMode()') },
   isDarkMode: false
-} as SearchProviderContextType)
+} as ColorModeContextType)
 
 interface ColorModeProviderProps {
   children: React.ReactNode
@@ -32,6 +32,7 @@ export default function ColorModeProvider(props: ColorModeProviderProps) {
     setColorModeCookie(newMode)
   }
 
+  // _App Fallback
   useEffect(() => {
     const currentColorModeCookie = getColorModeCookie()
 

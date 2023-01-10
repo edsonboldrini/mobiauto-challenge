@@ -41,4 +41,7 @@ describe("test exercise01 function", () => {
   it("should return true for checkIfTheFirstLetterIsUppercase('Deu Certo!')", () => {
     expect(checkIfTheFirstLetterIsUppercase('Deu Certo!')).toBe(true);
   });
+  it("should return true for checkIfTheFirstLetterIsUppercase('Deu Certo!')", () => {
+    expect(checkIfTheFirstLetterIsUppercase('   Roberto')).toBe(false);
+  });
 });
